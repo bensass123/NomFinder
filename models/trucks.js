@@ -1,0 +1,45 @@
+// Include the Mongoose Dependencies
+var mongoose = require("mongoose");
+
+var Schema = mongoose.Schema;
+
+// Create a Schema for capturing clicks. We'll use clickID to update the same clickCounter
+var TruckSchema = new Schema({
+  favorites: {
+    type: Number
+  },
+  TruckID: {
+    type: String
+  },
+  ownerName: {
+  	type: String
+  },
+  truckName: {
+  	type: String
+  },
+  phone: {
+  	type: String
+  },
+  website: {
+  	type: String
+  },
+  foodType: {
+  	type: String
+  }
+  status: {
+  	type: Boolean
+  }, 
+  lat: {
+  	type: String
+  },
+  long: {
+  	type: String
+  }
+  
+});
+
+// Create the Model
+var Truck = mongoose.model("Truck", TruckSchema);
+
+// Export it for use elsewhere
+module.exports = Truck;
