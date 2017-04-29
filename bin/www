@@ -19,7 +19,19 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = http.createServer(app)
+
+// if (process.env.NODE_ENV === 'production') {
+app.on('stormpath.ready', function() {
+  console.log('Stormpath ready');
+
+    server.listen(port, function() {
+      console.log('App listening on PORT ' + port);
+    });
+    server.on('error', onError);
+    server.on('listening', onListening);
+  
+});
 
 /**
  * Listen on provided port, on all network interfaces.
