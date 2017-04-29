@@ -16,6 +16,9 @@ var UserSchema = new Schema({
   },
   phone: {
     type: String
+  },
+  username: {
+    type: String
   }
   
 });
