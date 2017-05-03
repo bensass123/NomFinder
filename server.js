@@ -63,14 +63,14 @@ app.get("/api", function(req, res) {
 // We will call this route the moment the "click" or "reset" button is pressed.
 app.post("/api", function(req, res) {
 
-  var TruckID = req.body.TruckID;
+  var clickID = req.body.clickID;
   var favorites = parseInt(req.body.favorites);
 
   // Note how this route utilizes the findOneAndUpdate function to update the clickCount
   // { upsert: true } is an optional object we can pass into the findOneAndUpdate method
   // If included, Mongoose will create a new document matching the description if one is not found
   Trucks.findOneAndUpdate({
-    truckID: truckID
+    clickID: clickID
   }, {
     $set: {
       favorites: favorites
@@ -82,6 +82,84 @@ app.post("/api", function(req, res) {
     }
     else {
       res.send("Updated Click Count!");
+    }
+  });
+});
+
+// Route to see trucked that have been favorited
+app.get("/recents", function(req, res) {
+  // Find all notes in the note collection with our Note model
+  Truck.find({}, function(error, doc) {
+    // Send any errors to the browser
+    if (error) {
+      res.send(error);
+    }
+    // Or send the doc to the browser
+    else {
+      res.send(doc);
+    }
+  });
+});
+
+// New seeing all favorited trucks from one given user
+app.get("/favorites", function(req, res) {
+  // Unwinding (splitting up the array) the user's favorite trucks from the favoite field in the user collection.
+  User.aggregate([{$unwind: "$favorites"}], function(err, doc){
+    if (err){
+      console.log(err);
+    } else {
+      // Doc is stored as favs.
+      var favs = doc;
+      // favoriteTrucks is an empty array that will store all of the user's favorite trucks.
+      var favoriteTrucks = [];
+      // Looping through the length of the results(docs aka favs) 
+      // and pushing all favorites into the favoriteTrucks array.
+      for (var i = 0; i < favs.length; i++) {
+        favoriteTrucks.push(favs[i].favorites);
+      }
+      res.send(favoriteTrucks);
+    }
+  }); 
+});
+
+// Route to see what user looks like without populating
+app.get("/user", function(req, res) {
+  // Find all users in the user collection with our User model
+  User.find({}, function(error, doc) {
+    // Send any errors to the browser
+    if (error) {
+      res.send(error);
+    }
+    // Or send the doc to the browser
+    else {
+      res.send(doc);
+    }
+  });
+});
+
+// New note creation via POST route
+app.post("/submit", function(req, res) {
+  // Use our Truck model to make a new favorite truck from the req.body
+  var newTruck = new Truck(req.body);
+  // Save the new note to mongoose
+  newTruck.save(function(error, doc) {
+    // Send any errors to the browser
+    if (error) {
+      res.send(error);
+    }
+    // Otherwise
+    else {
+      // Find our user and push the new truck name into the User's favorites array
+      User.findOneAndUpdate({}, { $push: { "favorites": doc.truckName } }, { new: true }, function(err, newdoc) {
+        // Send any errors to the browser
+        if (err) {
+          res.send(err);
+        }
+        // Or send the newdoc to the browser
+        else {
+          res.send(newdoc);
+        }
+      });
     }
   });
 });

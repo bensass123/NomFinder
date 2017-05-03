@@ -3,12 +3,11 @@ var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
-// Create a Schema for capturing clicks. We'll use clickID to update the same clickCounter
 var TruckSchema = new Schema({
   favorites: {
     type: Number
   },
-  TruckID: {
+  clickID: {
     type: String
   },
   ownerName: {
