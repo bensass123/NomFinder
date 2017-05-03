@@ -5,9 +5,8 @@ var stormpath = require('express-stormpath');
 
 /* GET home page. */
 router.get('/',stormpath.loginRequired, function(req, res, next) {
-  res.render('index', { title: 'Express' });
+    res.sendFile(path.join(__dirname, '/../views/index.html'));
 });
-
 
 
 module.exports = router;
