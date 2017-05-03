@@ -5,7 +5,12 @@ var stormpath = require('express-stormpath');
 
 /* GET home page. */
 router.get('/',stormpath.loginRequired, function(req, res, next) {
-    res.sendFile(path.join(__dirname, '/../views/index.html'));
+    if (req.user.customData.group === 'user') {
+        res.sendFile(path.join(__dirname, '/../views/index.html'));
+    }
+    else {
+        res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
+    }
 });
 
 

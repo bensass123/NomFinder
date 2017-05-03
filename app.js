@@ -38,9 +38,23 @@ app.use(stormpath.init(app, {
     },
     login: {
       nextUri: '/'
+    },
+    register: {
+      form: {
+        fields: {
+          group: {
+            enabled: true,
+            label: 'User/Admin',
+            placeholder: 'User',
+            required: true,
+            type: "text"
+          }
+        }
+      }
     }
   }
 }));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
