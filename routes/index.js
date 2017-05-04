@@ -19,11 +19,26 @@ router.get('/',stormpath.loginRequired, function(req, res, next) {
             case 'admin':
                 res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
                 break;
+            case 'super':
+                res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
+                break;
         }
+        
     });
 });
 
-// TEST ROUTES TO SET ADMIN OR USER
+// TEST ROUTES TO SET ADMIN OR USER OR SUPER
+
+router.get('/setsuper',stormpath.loginRequired, function(req, res, next) {
+    req.user.getCustomData(function(err, data) { 
+        if (err) {console.log(err);}
+        data.group = 'super';
+        data.save(() => {
+            console.log('user group set to super');
+            res.redirect('/');
+        });
+    });
+});
 
 router.get('/setadmin',stormpath.loginRequired, function(req, res, next) {
     req.user.getCustomData(function(err, data) { 
@@ -98,14 +113,20 @@ router.get("/alltrucks", function(req, res) {
 router.get("/deletetrucks", function(req, res) {
     Trucks.remove({}, function(err) { 
         res.send('trucks removed');
-        
     });
 });
 
 router.post('/addtruck', stormpath.loginRequired, function (req, res) {
     req.body.truckName;
     req.body.ownerName;
-    req.body.clickI
+    req.body.clickId;
+    helpers.updateWith('Truck1', 'Owner1', 'Truck1');
+})
+
+router.post('/postadmin', stormpath.loginRequired, function (req, res) {
+    req.body.truckName;
+    req.body.ownerName;
+    req.body.clickId;
     helpers.updateWith('Truck1', 'Owner1', 'Truck1');
 })
 
