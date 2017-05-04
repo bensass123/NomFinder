@@ -16,12 +16,9 @@ var UserSchema = new Schema({
   username: {
     type: String
   },
-  favoriteTrucks: [{
-    // Store ObjectIds in the array
-    type: Schema.Types.Mixed,
-    // The ObjectIds will refer to the ids in the Truck model
-    ref: "Trucks"
-  }]
+  favoriteTrucks: {
+    type: Array
+  }
   
 });
 
