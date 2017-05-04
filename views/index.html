@@ -58,10 +58,11 @@
     </div>
 
     <script>
-    var map;
+    var map, activeTrucks;
     var truckIcon = 'images/truck.gif';
+    var hungryIcon = 'images/hungryguy.gif';
 
-    function initMap() {
+    var initMap = ()  => {
         
         var startPos;
         var geoSuccess = function(position) {
@@ -73,29 +74,70 @@
                 center: {lat: lat, lng: long},
                 zoom: 12
             });
-            placeMarker(lat, long, 'BurgerTown');
+            placeUserMarker(lat, long);
+            setActiveTrucks();
         }
         navigator.geolocation.getCurrentPosition(geoSuccess);
     }
 
-    var placeMarker = (lat, long, truckName) => {
-        var infowindow = new google.maps.InfoWindow({
+    var placeUserMarker = (lat, long) => {
+        let marker = new google.maps.Marker({
+            position: {lat: lat, lng: long},
+            title: 'USER LOCATION',
+            icon: hungryIcon,
+            animation: google.maps.Animation.DROP,
+            draggable: true,
+            map: map
+        });
+
+        // To add the marker to the map, call setMap();
+        marker.setMap(map);
+    }
+
+    var placeMarker = (lat, long, truckName, icon) => {
+      console.log('placemarker run');
+      console.log(lat, long, truckName, icon);
+      // no info window for user
+        let infowindow = new google.maps.InfoWindow({
           content: truckName
         });
 
-        var marker = new google.maps.Marker({
+        let marker = new google.maps.Marker({
             position: {lat: lat, lng: long},
-            title:"Hello World!",
-            icon: truckIcon
+            title: truckName,
+            icon: icon,
+            animation: google.maps.Animation.BOUNCE,
+            map: map
         });
+
         marker.addListener('click', function() {
           infowindow.open(map, marker);
         });
 
+        // To add the marker to the map, call setMap();
         marker.setMap(map);
     }
 
-// To add the marker to the map, call setMap();
+    var setActiveTrucks = () => {
+      //ajax call to get active trucks, then send all data to placeMarker to create Markers
+      $.get("/api", function(data, status){
+        console.log("Data: " + JSON.stringify(data) + "\nStatus: " + JSON.stringify(status));
+        activeTrucks = data;
+      }).then(() => {
+        for (var i = 0; i <activeTrucks.length; i++) {
+          var t = activeTrucks[i];
+          placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, truckIcon);
+        }
+      });
+    }
+
+    $(document).ready(() => {
+        
+    });
+
+    
+
+
     
 
       

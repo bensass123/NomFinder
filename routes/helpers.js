@@ -13,7 +13,7 @@ module.exports = {
                 status: status,
                 lat: lat,
                 long: long
-            }
+            };
         return Trucks.update({truckName: truckName}, obj, {upsert: true}, (err, doc) => {
             if (err) {console.log(err);}
             else {console.log(doc);}

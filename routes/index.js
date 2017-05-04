@@ -16,11 +16,17 @@ router.get('/',stormpath.loginRequired, function(req, res, next) {
     }
 });
 
+// TESTING - TEMP ROUTE FOR USER FRONTEND
+
+router.get('/userfrontend',stormpath.loginRequired, function(req, res, next) {
+    res.sendFile(path.join(__dirname, '/../views/index.html'));
+})
+
 
 
 // testing - route to populate db w test data, use update instead, upsert
 
-router.get('/initupdate', stormpath.loginRequired,function (req, res) {
+router.get('/init', stormpath.loginRequired,function (req, res) {
     helpers.updateWith('Truck1', 'Owner1', 'Truck1');
     helpers.updateWith('Truck2', 'Owner2', 'Truck2');
     helpers.updateWith('Truck3', 'Owner3', 'Truck3');
@@ -38,31 +44,7 @@ router.get('/initupdate', stormpath.loginRequired,function (req, res) {
 });
 
 
-// TESTING -  route to populate db w test data
 
-router.get('/init', stormpath.loginRequired,function (req, res) {
-    try {
-      Trucks.insertMany( [
-        { clickId: 'Truck1',
-            ownerName: 'Owner1',
-            truckName: 'Truck1',
-            status: false},
-        { clickId: 'Truck2',
-            ownerName: 'Owner2',
-            truckName: 'Truck2',
-            status: false},
-        { clickId: 'Truck3',
-            ownerName: 'Owner3',
-            truckName: 'Truck3',
-            status: false}      
-      ], {upsert: true} ).then(() => {
-          res.send({success: 'Initiation success'});
-      });
-    }
-     catch (e) {
-        console.log(e);
-    }   
-});
 
 // TESTING - RETURN ALL TRUCKS IN DB REGARDLESS OF STATUS
 
@@ -89,6 +71,14 @@ router.get("/deletetrucks", function(req, res) {
     });
 });
 
+router.post('/addtruck', stormpath.loginRequired, function (req, res) {
+    req.body.truckName;
+    req.body.ownerName;
+    req.body.clickI
+    helpers.updateWith('Truck1', 'Owner1', 'Truck1');
+})
+
+// posts lat and long data to truck and/or updates status
 
 router.post('/postloc', stormpath.loginRequired, function (req, res) {
     console.log('post location route hit');
@@ -155,7 +145,7 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
 router.get("/api", function(req, res) {
 
   // This GET request will search for all available trucks.
-  Trucks.find({where: {status: true}}).exec(function(err, doc) {
+  Trucks.find({status: true}).exec(function(err, doc) {
 
     if (err) {
       console.log(err);
@@ -170,14 +160,14 @@ router.get("/api", function(req, res) {
 // We will call this route the moment the "click" or "reset" button is pressed.
 router.post("/api", function(req, res) {
 
-  var clickID = req.body.clickID;
+  var clickId = req.body.clickId;
   var favorites = parseInt(req.body.favorites);
 
   // Note how this route utilizes the findOneAndUpdate function to update the clickCount
   // { upsert: true } is an optional object we can pass into the findOneAndUpdate method
   // If included, Mongoose will create a new document matching the description if one is not found
   Trucks.findOneAndUpdate({
-    clickID: clickID
+    clickId: clickId
   }, {
     $set: {
       favorites: favorites
