@@ -4,6 +4,7 @@ var path = require('path');
 var stormpath = require('express-stormpath');
 var Trucks = require('../models/Truck.js');
 var Users = require('../models/User.js');
+var helpers = require('./helpers.js');
 
 /* GET home page. */
 router.get('/',stormpath.loginRequired, function(req, res, next) {
@@ -16,10 +17,25 @@ router.get('/',stormpath.loginRequired, function(req, res, next) {
 });
 
 
-// returns all active trucks
-router.get('/actives', stormpath.loginRequired,function (req, res) {
 
-})
+// testing - route to populate db w test data, use update instead, upsert
+
+router.get('/initupdate', stormpath.loginRequired,function (req, res) {
+    helpers.updateWith('Truck1', 'Owner1', 'Truck1');
+    helpers.updateWith('Truck2', 'Owner2', 'Truck2');
+    helpers.updateWith('Truck3', 'Owner3', 'Truck3');
+    helpers.updateWith('Truck4', 'Owner4', 'Truck4');
+
+    //return all trucks
+    Trucks.find({}).exec(function(err, doc) {
+        if (err) {
+        console.log(err);
+        }
+        else {
+        res.send(doc);
+        }
+    });
+});
 
 
 // TESTING -  route to populate db w test data
@@ -39,12 +55,40 @@ router.get('/init', stormpath.loginRequired,function (req, res) {
             ownerName: 'Owner3',
             truckName: 'Truck3',
             status: false}      
-      ] );
+      ], {upsert: true} ).then(() => {
+          res.send({success: 'Initiation success'});
+      });
     }
      catch (e) {
         console.log(e);
     }   
 });
+
+// TESTING - RETURN ALL TRUCKS IN DB REGARDLESS OF STATUS
+
+router.get("/alltrucks", function(req, res) {
+
+  // This GET request will search for all available trucks.
+  Trucks.find({}).exec(function(err, doc) {
+
+    if (err) {
+      console.log(err);
+    }
+    else {
+      res.send(doc);
+    }
+  });
+});
+
+// TESTING, DROP ALL TRUCKS DOCUMENTS
+
+router.get("/deletetrucks", function(req, res) {
+    Trucks.remove({}, function(err) { 
+        res.send('trucks removed');
+        
+    });
+});
+
 
 router.post('/postloc', stormpath.loginRequired, function (req, res) {
     console.log('post location route hit');
