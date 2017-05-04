@@ -8,12 +8,43 @@ var helpers = require('./helpers.js');
 
 /* GET home page. */
 router.get('/',stormpath.loginRequired, function(req, res, next) {
-    if (req.user.customData.group === 'user') {
-        res.sendFile(path.join(__dirname, '/../views/index.html'));
-    }
-    else {
-        res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
-    }
+    req.user.getCustomData(function(err, data) { 
+        // get user group
+        var group = data.group
+    
+        switch (group) {
+            case 'user':
+                res.sendFile(path.join(__dirname, '/../views/index.html'));
+                break;
+            case 'admin':
+                res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
+                break;
+        }
+    });
+});
+
+// TEST ROUTES TO SET ADMIN OR USER
+
+router.get('/setadmin',stormpath.loginRequired, function(req, res, next) {
+    req.user.getCustomData(function(err, data) { 
+        if (err) {console.log(err);}
+        data.group = 'admin';
+        data.save(() => {
+            console.log('user group set to admin');
+            res.redirect('/');
+        });
+    });
+});
+
+router.get('/setuser',stormpath.loginRequired, function(req, res, next) {
+    req.user.getCustomData(function(err, data) { 
+        if (err) {console.log(err);}
+        data.group = 'user';
+        data.save(() => {
+            console.log('user group set to User');
+            res.redirect('/');
+        });
+    });
 });
 
 // TESTING - TEMP ROUTE FOR USER FRONTEND
@@ -26,7 +57,7 @@ router.get('/userfrontend',stormpath.loginRequired, function(req, res, next) {
 
 // testing - route to populate db w test data, use update instead, upsert
 
-router.get('/init', stormpath.loginRequired,function (req, res) {
+router.get('/init', stormpath.loginRequired, function (req, res) {
     helpers.updateWith('Truck1', 'Owner1', 'Truck1', true, 35.0535596, -80.82116959999999);
     helpers.updateWith('Truck2', 'Owner2', 'Truck2', true, 35.1535596, -80.82116959999999);
     helpers.updateWith('Truck3', 'Owner3', 'Truck3', true, 35.0535596, -80.92116959999999);

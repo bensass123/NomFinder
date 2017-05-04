@@ -49,6 +49,12 @@ db.once("open", function() {
 // stormpath 
 
 app.use(stormpath.init(app, {
+  preRegistrationHandler: function (formData, req, res, next) {
+    if (!(formData.group === 'user' || formData.group === 'admin')) {
+      return next(new Error('You must be a user or an admin.'));
+    }
+    next();
+  },
   website: true,
   web: {
     me: {
@@ -60,12 +66,14 @@ app.use(stormpath.init(app, {
       nextUri: '/'
     },
     register: {
+      autoLogin: true,
+      nextUri: '/',
       form: {
         fields: {
           group: {
             enabled: true,
             label: 'User/Admin',
-            placeholder: 'User',
+            placeholder: 'user',
             required: true,
             type: "text"
           }
