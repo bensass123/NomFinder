@@ -27,10 +27,10 @@ router.get('/userfrontend',stormpath.loginRequired, function(req, res, next) {
 // testing - route to populate db w test data, use update instead, upsert
 
 router.get('/init', stormpath.loginRequired,function (req, res) {
-    helpers.updateWith('Truck1', 'Owner1', 'Truck1');
-    helpers.updateWith('Truck2', 'Owner2', 'Truck2');
-    helpers.updateWith('Truck3', 'Owner3', 'Truck3');
-    helpers.updateWith('Truck4', 'Owner4', 'Truck4');
+    helpers.updateWith('Truck1', 'Owner1', 'Truck1', true, 35.0535596, -80.82116959999999);
+    helpers.updateWith('Truck2', 'Owner2', 'Truck2', true, 35.1535596, -80.82116959999999);
+    helpers.updateWith('Truck3', 'Owner3', 'Truck3', true, 35.0535596, -80.92116959999999);
+    helpers.updateWith('Truck4', 'Owner4', 'Truck4', true, 35.2535596, -80.82116959999999);
 
     //return all trucks
     Trucks.find({}).exec(function(err, doc) {
