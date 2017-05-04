@@ -15,8 +15,14 @@ router.get('/',stormpath.loginRequired, function(req, res, next) {
     }
 });
 
+
+// returns all active trucks
+router.get('/actives', stormpath.loginRequired,function (req, res) {
+
+})
+
+
 // TESTING -  route to populate db w test data
-//
 
 router.get('/init', stormpath.loginRequired,function (req, res) {
     try {
@@ -71,7 +77,7 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
             console.log(err);
             }
             else {
-            res.send("Status: Off-duty");
+            res.send(truckName + " Status: Off-duty");
             }
         });
     } 
@@ -92,7 +98,7 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
             console.log(err);
             }
             else {
-            res.send("Status: On-duty");
+            res.send(truckName + " Status: On-duty");
             }
         });
     }
