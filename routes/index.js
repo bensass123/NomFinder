@@ -38,7 +38,7 @@ router.get('/init', stormpath.loginRequired,function (req, res) {
         console.log(err);
         }
         else {
-        res.send(doc);
+        res.end();
         }
     });
 });
