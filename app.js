@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var stormpath = require('express-stormpath');
+var mongoose = require('mongoose');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -26,9 +27,34 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
+// mongoose
+
+// Database configuration with mongoose
+// LOCAL ENVIRONMENT
+// mongoose.connect("mongodb://localhost/nom");
+// PRODUCTION ENVIRONMENT
+mongoose.connect("mongodb://admin:codingrocks@ds023674.mlab.com:23674/heroku_5ql1blnl");
+var db = mongoose.connection;
+
+// Show any mongoose errors
+db.on("error", function(error) {
+  console.log("Mongoose Error: ", error);
+});
+
+// Once logged in to the db through mongoose, log a success message
+db.once("open", function() {
+  console.log("Mongoose connection successful.");
+});
+
 // stormpath 
 
 app.use(stormpath.init(app, {
+  preRegistrationHandler: function (formData, req, res, next) {
+    if (!(formData.group === 'user' || formData.group === 'admin')) {
+      return next(new Error('You must be a user or an admin.'));
+    }
+    next();
+  },
   website: true,
   web: {
     me: {
@@ -40,12 +66,14 @@ app.use(stormpath.init(app, {
       nextUri: '/'
     },
     register: {
+      autoLogin: true,
+      nextUri: '/',
       form: {
         fields: {
           group: {
             enabled: true,
             label: 'User/Admin',
-            placeholder: 'User',
+            placeholder: 'user',
             required: true,
             type: "text"
           }
