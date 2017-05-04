@@ -16,6 +16,7 @@ router.get('/',stormpath.loginRequired, function(req, res, next) {
 });
 
 // TESTING -  route to populate db w test data
+//
 
 router.get('/init', stormpath.loginRequired,function (req, res) {
     try {
