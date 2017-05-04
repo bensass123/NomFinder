@@ -58,6 +58,16 @@
     </div>
 
     <script>
+    
+    // TESTING ONLY, POPULATES DB WITH TEST DATA
+    var testPopulate = () => {
+      $.get('/init', (err) =>{
+        if(err) {console.log(err)}
+      });
+    }
+
+    testPopulate();
+
     var map, activeTrucks;
     var truckIcon = 'images/truck.gif';
     var hungryIcon = 'images/hungryguy.gif';
