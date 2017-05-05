@@ -1,14 +1,19 @@
 var express = require('express');
 var router = express.Router();
+var path = require('path');
+var stormpath = require('express-stormpath');
+var Trucks = require('../models/Truck.js');
+var Users = require('../models/User.js');
+var helpers = require('./helpers.js');
 
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', stormpath.loginRequired, function(req, res, next) {
   res.send('respond with a resource');
 });
 
 // Route to see trucked that have been favorited
-router.get("/trucks", function(req, res) {
+router.get("/trucks", stormpath.loginRequired, function(req, res) {
   // Find all notes in the note collection with our Note model
   Truck.find({}, function(error, doc) {
     // Send any errors to the browser
@@ -23,7 +28,7 @@ router.get("/trucks", function(req, res) {
 });
 
 // New seeing all favorited trucks from one given user
-router.get("/favorites", function(req, res) {
+router.get("/favorites", stormpath.loginRequired, function(req, res) {
   // Unwinding (splitting up the array) the user's favorite trucks from the favoite field in the user collection.
   User.aggregate([{$unwind: "$favorites"}], function(err, doc){
     if (err){
@@ -44,11 +49,11 @@ router.get("/favorites", function(req, res) {
 });
 
 // New note creation via POST route
-router.post("/favorites/:truckName", function(req, res) {
+router.post("/favorites/:truckName", stormpath.loginRequired, function(req, res) {
 
   var truckName = req.body;
       // Find our user and push the new truck name into the User's favorites array
-      User.update({username: "BurgerTown"}, { $push: { favorites: truckName } }, function(err, newdoc) {
+      User.update({username: req.user.username}, { $push: { favorites: truckName } }, function(err, newdoc) {
         // Send any errors to the browser
         if (err) {
           res.send(err);
@@ -61,7 +66,7 @@ router.post("/favorites/:truckName", function(req, res) {
 });
 
 
-router.delete("/favorites/:truckName", function(req, res){
+router.delete("/favorites/:truckName", stormpath.loginRequired, function(req, res){
   
   User.aggregate([{$unwind: "$favorites"}], function(err, doc){
     if (err){

@@ -4,8 +4,11 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-  name: {
+  firstName: {
   	type: String
+  },
+  lastName: {
+    type: String
   },
   email: {
     type: String
@@ -16,7 +19,7 @@ var UserSchema = new Schema({
   username: {
     type: String
   },
-  favoriteTrucks: {
+  favorites: {
     type: Array
   }
   

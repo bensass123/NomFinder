@@ -1,5 +1,3 @@
-
-
 var Trucks = require('../models/Truck.js');
 var Users = require('../models/User.js');
 
@@ -31,9 +29,8 @@ module.exports = {
                 username: username,
                 truckName: truckName
             };
-            
-            // Find our user and push the new truck name into the User's favorites array
-            User.update({username: username}, { $push: { favorites: truckName } }, function(err, newdoc) {
+            // Find our user and pull the a truck name out of the User's favorites array
+            User.update({username: username}, { $pull: { favorites: {truckName: truckName } } }, function(err, newdoc) {
                 // Send any errors to the browser
                 if (err) {
                   res.send(err);
@@ -43,6 +40,7 @@ module.exports = {
                   res.send(newdoc);
                 }
             });
+            
         } else {
                 var returnVal = console.log("Truck added");
                 $(this).addClass("favorited", returnVal);
@@ -52,9 +50,9 @@ module.exports = {
                 username: username,
                 truckName: truckName
             };
-            
+
             // Find our user and push the new truck name into the User's favorites array
-            User.update({username: username}, { $pull: { favorites: {truckName: truckName } } }, function(err, newdoc) {
+            User.update({username: username}, { $push: { favorites: truckName } }, function(err, newdoc) {
                 // Send any errors to the browser
                 if (err) {
                   res.send(err);
