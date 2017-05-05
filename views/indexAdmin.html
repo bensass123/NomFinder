@@ -52,6 +52,15 @@
         navigator.geolocation.getCurrentPosition(geoSuccess);
     }
 
+    var addTruck = () => {
+      $.post('/addtruck', (err) =>{
+        if(err) {console.log(err)}
+        console.log('truck added');
+      });
+    }
+
+    addTruck();
+
     $(document).ready(() => {
         setLoc();
     });

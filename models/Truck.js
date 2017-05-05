@@ -7,10 +7,13 @@ var TruckSchema = new Schema({
   favorites: {
     type: Number
   },
-  clickID: {
+  email: {
     type: String
   },
-  ownerName: {
+  firstName: {
+  	type: String
+  },
+  lastName: {
   	type: String
   },
   truckName: {

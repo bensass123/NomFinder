@@ -69,6 +69,17 @@
 
     testPopulate();
 
+    // add user to db if new
+
+    var addUser = () => {
+      $.post('/adduser', (err) =>{
+        if(err) {console.log(err)}
+        console.log('user added');
+      });
+    }
+
+    addUser();
+
     var map, activeTrucks;
     var truckIcon = 'images/truck.gif';
     var hungryIcon = 'images/hungryguy.gif';

@@ -5,16 +5,33 @@ var Users = require('../models/User.js');
 
 module.exports = {
 
-    updateWith: (clickId, ownerName, truckName, status = false, lat = 1, long = 2) => {
+    addTruck: (email, firstName, lastName, truckName, status = false, lat = 1, long = 2) => {
         var obj = {
-                clickId: clickId,
-                ownerName: ownerName,
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
                 truckName: truckName,
                 status: status,
                 lat: lat,
                 long: long
             };
         return Trucks.update({truckName: truckName}, obj, {upsert: true}, (err, doc) => {
+            if (err) {console.log(err);}
+            else {console.log(doc);}
+        })
+    },
+    addUser: (user) => {
+        if (!user.phone) {
+            user.phone = 55555555555;
+        }
+        var obj = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phone: user.phone,
+            username: user.username
+        }
+        return Users.update({email: user.email}, obj, {upsert: true}, (err, doc) => {
             if (err) {console.log(err);}
             else {console.log(doc);}
         })
