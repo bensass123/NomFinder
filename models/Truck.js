@@ -11,10 +11,9 @@ var TruckSchema = new Schema({
     type: String
   },
   firstName: {
-  	type: String
   },
   lastName: {
-  	type: String
+    type: String
   },
   truckName: {
   	type: String
