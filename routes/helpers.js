@@ -16,10 +16,10 @@ module.exports = {
             if (err) {console.log(err);}
             else {console.log(doc);}
         })
-    }
+    },
 
     // Add / remove favorites
-    function updateFavorites(clickId, truckName, username) {
+    updateFavorites: (clickId, truckName, username) => {
         if($(this).hasClass("favorited")) {
             var returnVal = console.log("Truck removed");
             $(this).removeClass("favorited", returnVal);
