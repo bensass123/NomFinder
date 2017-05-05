@@ -19,11 +19,46 @@ router.get('/',stormpath.loginRequired, function(req, res, next) {
             case 'admin':
                 res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
                 break;
+            case 'super':
+                res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
+                break;
         }
+        
     });
 });
 
-// TEST ROUTES TO SET ADMIN OR USER
+router.post('/adduser', stormpath.loginRequired, function (req,res){
+    helpers.addUser(req.user);
+    console.log('adduser hit');
+    console.log(req.user);
+});
+
+router.get("/allusers", stormpath.loginRequired, function(req, res) {
+
+  // This GET request will search for all available trucks.
+  Users.find({}).exec(function(err, doc) {
+
+    if (err) {
+      console.log(err);
+    }
+    else {
+      res.send(doc);
+    }
+  });
+});
+
+// TEST ROUTES TO SET ADMIN OR USER OR SUPER
+
+router.get('/setsuper',stormpath.loginRequired, function(req, res, next) {
+    req.user.getCustomData(function(err, data) { 
+        if (err) {console.log(err);}
+        data.group = 'super';
+        data.save(() => {
+            console.log('user group set to super');
+            res.redirect('/');
+        });
+    });
+});
 
 router.get('/setadmin',stormpath.loginRequired, function(req, res, next) {
     req.user.getCustomData(function(err, data) { 
@@ -58,10 +93,10 @@ router.get('/userfrontend',stormpath.loginRequired, function(req, res, next) {
 // testing - route to populate db w test data, use update instead, upsert
 
 router.get('/init', stormpath.loginRequired, function (req, res) {
-    helpers.updateWith('Truck1', 'Owner1', 'Truck1', true, 35.0535596, -80.82116959999999);
-    helpers.updateWith('Truck2', 'Owner2', 'Truck2', true, 35.1535596, -80.82116959999999);
-    helpers.updateWith('Truck3', 'Owner3', 'Truck3', true, 35.0535596, -80.92116959999999);
-    helpers.updateWith('Truck4', 'Owner4', 'Truck4', true, 35.2535596, -80.82116959999999);
+    helpers.addTruck('email1', 'firstname1', 'lastname1', 'Truck1', true, 35.0535596, -80.82116959999999);
+    helpers.addTruck('email2', 'firstname2', 'lastname2', 'Truck2', true, 35.1535596, -80.82116959999999);
+    helpers.addTruck('email3', 'firstname3', 'lastname3', 'Truck3', true, 35.0535596, -80.92316959999999);
+    helpers.addTruck('email4', 'firstname4', 'lastname4', 'Truck4', true, 35.2535596, -80.8246959999999);
 
     //return all trucks
     Trucks.find({}).exec(function(err, doc) {
@@ -79,7 +114,7 @@ router.get('/init', stormpath.loginRequired, function (req, res) {
 
 // TESTING - RETURN ALL TRUCKS IN DB REGARDLESS OF STATUS
 
-router.get("/alltrucks", function(req, res) {
+router.get("/alltrucks", stormpath.loginRequired,  function(req, res) {
 
   // This GET request will search for all available trucks.
   Trucks.find({}).exec(function(err, doc) {
@@ -98,14 +133,19 @@ router.get("/alltrucks", function(req, res) {
 router.get("/deletetrucks", function(req, res) {
     Trucks.remove({}, function(err) { 
         res.send('trucks removed');
-        
     });
 });
 
 router.post('/addtruck', stormpath.loginRequired, function (req, res) {
+    var user = req.user;
+    helpers.addTruck(user.email, user.firstName, user.lastName, 'Truck1');
+    // email, firstName, lastName, truckName
+});
+
+router.post('/postadmin', stormpath.loginRequired, function (req, res) {
     req.body.truckName;
     req.body.ownerName;
-    req.body.clickI
+    req.body.clickId;
     helpers.updateWith('Truck1', 'Owner1', 'Truck1');
 })
 
