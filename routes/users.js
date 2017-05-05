@@ -52,48 +52,32 @@ router.get("/favorites", stormpath.loginRequired, function(req, res) {
 router.post("/favorites/:truckName", stormpath.loginRequired, function(req, res) {
 
   var truckName = req.body;
-      // Find our user and push the new truck name into the User's favorites array
-      User.update({username: req.user.username}, { $push: { favorites: truckName } }, function(err, newdoc) {
-        // Send any errors to the browser
-        if (err) {
-          res.send(err);
-        }
-        // Or send the newdoc to the browser
-        else {
-          res.send(newdoc);
-        }
-      });
+// Find our user and push the new truck name into the User's favorites array
+  User.update({username: username}, { $push: { favorites: truckName } }, function(err, newdoc) {
+      // Send any errors to the browser
+      if (err) {
+        res.send(err);
+      }
+      // Or send the newdoc to the browser
+      else {
+        res.send(newdoc);
+      }
+  });
 });
 
 
 router.delete("/favorites/:truckName", stormpath.loginRequired, function(req, res){
-  
-  User.aggregate([{$unwind: "$favorites"}], function(err, doc){
-    if (err){
-      console.log(err);
-    } else {
-      // Doc is stored as favs.
-      var favs = doc;
-      // favoriteTrucks is an empty array that will store all of the user's favorite trucks.
-      var favoriteTrucks = [];
-      // Looping through the length of the results(docs aka favs) 
-      // and pushing all favorites into the favoriteTrucks array.
-      for (var i = 0; i < favs.length; i++) {
-        favoriteTrucks.push(favs[i].favorites);
-      }
-
-      favoriteTrucks.find()
-      
-      User.deleteOne({favorites: req.params}, function(err, doc){
-        if (err){
-          console.log(err);
-        } else {
-          res.send(doc);
-        }
-      });
+  // Find our user and pull the a truck name out of the User's favorites array
+  User.update({username: username}, { $pull: { favorites: {truckName: truckName } } }, function(err, newdoc) {
+    // Send any errors to the browser
+    if (err) {
+      res.send(err);
+    }
+    // Or send the newdoc to the browser
+    else {
+      res.send(newdoc);
     }
   }); 
-
 });
 
 module.exports = router;

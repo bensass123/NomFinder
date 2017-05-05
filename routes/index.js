@@ -75,7 +75,21 @@ router.get('/init', stormpath.loginRequired, function (req, res) {
 });
 
 
-
+// This is the route we will send GET requests to retrieve our most recent click data.
+ // We will call this route the moment our page gets rendered
+ router.get("/api", function(req, res) {
+ 
+   // This GET request will search for all available trucks.
+   Trucks.find({status: true}).exec(function(err, doc) {
+ 
+     if (err) {
+       console.log(err);
+     }
+     else {
+       res.send(doc);
+     }
+   });
+ });
 
 // TESTING - RETURN ALL TRUCKS IN DB REGARDLESS OF STATUS
 
