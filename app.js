@@ -31,9 +31,9 @@ app.use('/users', users);
 
 // Database configuration with mongoose
 // LOCAL ENVIRONMENT
-// mongoose.connect("mongodb://localhost/nom");
+mongoose.connect("mongodb://localhost/nom");
 // PRODUCTION ENVIRONMENT
-mongoose.connect("mongodb://admin:codingrocks@ds023674.mlab.com:23674/heroku_5ql1blnl");
+// mongoose.connect("mongodb://admin:codingrocks@ds023674.mlab.com:23674/heroku_5ql1blnl");
 var db = mongoose.connection;
 
 // Show any mongoose errors
@@ -82,7 +82,6 @@ app.use(stormpath.init(app, {
     }
   }
 }));
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
