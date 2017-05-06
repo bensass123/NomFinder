@@ -23,9 +23,21 @@ router.get('/',stormpath.loginRequired, function(req, res, next) {
                 res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
                 break;
         }
-        
     });
 });
+
+router.get("/api", function(req, res) {
+   // This GET request will search for all available trucks.
+   Trucks.find({status: true}).exec(function(err, doc) {
+ 
+     if (err) {
+       console.log(err);
+     }
+     else {
+       res.send(doc);
+     }
+   });
+ });
 
 router.post('/adduser', stormpath.loginRequired, function (req,res){
     helpers.addUser(req.user);
