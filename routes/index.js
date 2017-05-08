@@ -226,7 +226,7 @@ router.get("/user", stormpath.loginRequired, function(req, res) {
 });
 
 // Add favorite truck via POST route
-router.post("/favorites/:truckName", stormpath.loginRequired, function(req, res) {
+router.post("/addFavorites/:truckName", stormpath.loginRequired, function(req, res) {
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
   // Find our user and push the new truck name into the User's favorites array
@@ -243,7 +243,7 @@ router.post("/favorites/:truckName", stormpath.loginRequired, function(req, res)
 });
 
 // Remove favorite truck via POST route
-router.get("/favorites/:truckName", stormpath.loginRequired, function(req, res) {
+router.post("/removeFavorites/:truckName", stormpath.loginRequired, function(req, res) {
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
   // Find our user and pull the a truck name out of the User's favorites array

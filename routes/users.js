@@ -48,10 +48,10 @@ router.get("/favorites", stormpath.loginRequired, function(req, res) {
   }); 
 });
 
-// New note creation via POST route
-router.post("/favorites/:truckName", stormpath.loginRequired, function(req, res) {
+// Adding new truck to favorites list
+router.post("/addFavorites/:truckName", stormpath.loginRequired, function(req, res) {
 
-  var truckName = req.body;
+  var truckName = req.params.truckName;
 // Find our user and push the new truck name into the User's favorites array
   User.update({username: username}, { $push: { favorites: truckName } }, function(err, newdoc) {
       // Send any errors to the browser
@@ -66,7 +66,9 @@ router.post("/favorites/:truckName", stormpath.loginRequired, function(req, res)
 });
 
 
-router.delete("/favorites/:truckName", stormpath.loginRequired, function(req, res){
+router.post("/removeFavorites/:truckName", stormpath.loginRequired, function(req, res){
+  
+  var truckName = req.params.truckName;
   // Find our user and pull the a truck name out of the User's favorites array
   User.update({username: username}, { $pull: { favorites: {truckName: truckName } } }, function(err, newdoc) {
     // Send any errors to the browser

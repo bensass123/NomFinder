@@ -152,42 +152,35 @@
       item.attr('text-center');
       var truck = $("<p>" + truckName + "</p>");
       item.append(truck);
-      var button = $("<button class='fav' data-name=" + truckName + "><i class='fa fa-heart' aria-hidden='true'></i></button>");
+      var button = $("<button class='heart' id='fav_" + truckName + "' data-name=" + truckName + "><span><i class='fa fa-heart' aria-hidden='true'></i></span></button>");
       item.append(button);
       $("#list").append(item);
     }
 
-    function favorites(truckName){
-      if ($(this).hasClass('favorited')){
-        $(this).removeClass('favorited');
-        $.get("/favorites/" + truckName, function(data, err){
-          console.log('Truck ' + data + ' will be removed.');
-          var truck = data;
-        }).then(() =>{
-          console.log('Truck removed.');
-        });
-      } else {
-        $(this).addClass("favorited");
-        $.post("/favorites/" + truckName, function(data, err){
-          console.log('Truck ' + data + ' will be added.');
-          var truck = data;
-        }).then(() =>{
-          console.log('Truck added.');
-        });
-      }
-    }
-
-    $(".fav").on("click", favorites);
-
-
     $(document).ready(() => {
+      $(document).on("click", ".heart", function(){
+        var truckName = $(this).data("name");
+
+        if ($(this).hasClass('favorited')){
+          $(this).removeClass('favorited');
+          $.post("/removeFavorites/" + truckName, function(data, err){
+            console.log('Truck ' + data + ' will be removed.');
+            var truck = data;
+          }).then(() =>{
+            console.log('Truck removed.');
+          });
+        } else {
+          $(this).addClass("favorited");
+          $.post("/addFavorites/" + truckName, function(data, err){
+            console.log('Truck ' + data + ' will be added.');
+            var truck = data;
+          }).then(() =>{
+            console.log('Truck added.');
+          });
+        }
+      });
         
     });
-
-    
-
-
-    
 
       
     </script>
