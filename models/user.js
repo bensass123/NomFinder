@@ -4,11 +4,8 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-  firstName: {
+  name: {
   	type: String
-  },
-  lastName: {
-    type: String
   },
   email: {
     type: String
@@ -19,9 +16,12 @@ var UserSchema = new Schema({
   username: {
     type: String
   },
-  favorites: {
-    type: Array
-  }
+  favoriteTrucks: [{
+    // Store ObjectIds in the array
+    type: Schema.Types.Mixed,
+    // The ObjectIds will refer to the ids in the Truck model
+    ref: "Trucks"
+  }]
   
 });
 

@@ -144,27 +144,18 @@
           placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, truckIcon);
           populateTruck(t.truckName);
         }
+        setClickEvents();
       });
     }
 
-    function populateTruck(truckName, favorite){
-      var item = $("<div>");
-      item.attr('text-center');
-      var truck = $("<p>" + truckName + "</p>");
-      item.append(truck);
-      var button = $("<button class='heart' id='fav_" + truckName + "' data-name=" + truckName + "><span><i class='fa fa-heart' aria-hidden='true'></i></span></button>");
-      item.append(button);
-      $("#list").append(item);
-    }
-
-    $(document).ready(() => {
-      $(document).on("click", ".heart", function(){
+    var setClickEvents = () => {
+      $('.heart').click(function(){
         var truckName = $(this).data("name");
 
         if ($(this).hasClass('favorited')){
           $(this).removeClass('favorited');
           $.post("/removeFavorites/" + truckName, function(data, err){
-            console.log('Truck ' + data + ' will be removed.');
+            console.log('Truck ' + truckName + ' will be removed.');
             var truck = data;
           }).then(() =>{
             console.log('Truck removed.');
@@ -179,6 +170,20 @@
           });
         }
       });
+    }
+
+    function populateTruck(truckName, favorite){
+      var item = $("<div>");
+      item.attr('text-center');
+      var truck = $("<p>" + truckName + "</p>");
+      item.append(truck);
+      var button = $("<button class='heart' id='fav_" + truckName + "' data-name=" + truckName + "><span><i class='fa fa-heart' aria-hidden='true'></i></span></button>");
+      item.append(button);
+      $("#list").append(item);
+    }
+
+    $(document).ready(() => {
+      
         
     });
 
