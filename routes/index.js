@@ -14,13 +14,13 @@ router.get('/',stormpath.loginRequired, function(req, res, next) {
     
         switch (group) {
             case 'user':
-                res.sendFile(path.join(__dirname, '/../views/index.html'));
+                res.sendFile(path.join(__dirname, '/../nomreact/public/index.html'));
                 break;
             case 'admin':
-                res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
+                res.sendFile(path.join(__dirname, '/../nomreact/public/index.html'));
                 break;
             case 'super':
-                res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
+                res.sendFile(path.join(__dirname, '/../nomreact/public/index.html'));
                 break;
         }
     });
@@ -126,7 +126,7 @@ router.get('/init', stormpath.loginRequired, function (req, res) {
 
 // TESTING - RETURN ALL TRUCKS IN DB REGARDLESS OF STATUS
 
-router.get("/alltrucks", stormpath.loginRequired,  function(req, res) {
+router.get("/alltrucks",   function(req, res) {
 
   // This GET request will search for all available trucks.
   Trucks.find({}).exec(function(err, doc) {
