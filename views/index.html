@@ -163,8 +163,7 @@
         } else {
           $(this).addClass("favorited");
           $.post("/addFavorites/" + truckName, function(data, err){
-            console.log('Truck ' + data + ' will be added.');
-            var truck = data;
+            console.log('Truck ' + truckName + ' will be added.');
           }).then(() =>{
             console.log('Truck added.');
           });

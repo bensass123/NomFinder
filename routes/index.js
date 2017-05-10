@@ -47,13 +47,35 @@ router.get('/setuser',stormpath.loginRequired, function(req, res, next) {
     });
 });
 
+router.get('/adduser', stormpath.loginRequired, function(req,res){
+  var username = req.user.username;
+  var firstName = req.user.firstName;
+  var lastName = req.user.lastName;
+  var email = req.user.email;
+  helpers.addUser(username, firstName, lastName, email);
+  res.end();
+});
+
+// Route to see what user looks like without populating
+router.get("/user", stormpath.loginRequired, function(req, res) {
+  // Find all users in the user collection with our User model
+  Users.find({username: req.user.username}, function(error, doc) {
+    // Send any errors to the browser
+    if (error) {
+      res.send(error);
+    }
+    // Or send the doc to the browser
+    else {
+      res.send(doc);
+    }
+  });
+});
+
 // TESTING - TEMP ROUTE FOR USER FRONTEND
 
 router.get('/userfrontend',stormpath.loginRequired, function(req, res, next) {
     res.sendFile(path.join(__dirname, '/../views/index.html'));
-})
-
-
+});
 
 // testing - route to populate db w test data, use update instead, upsert
 
@@ -107,6 +129,15 @@ router.get("/alltrucks", function(req, res) {
   });
 });
 
+router.get("/truckInfo/:truckName", function(req, res){
+  Trucks.findOne({truckName: req.params.truckName}).exec(function(err, doc){
+    if (err){
+      console.log(err);
+    } else {
+      res.send(doc);
+    }
+  });
+});
 // TESTING, DROP ALL TRUCKS DOCUMENTS
 
 router.get("/deletetrucks", function(req, res) {
@@ -115,7 +146,6 @@ router.get("/deletetrucks", function(req, res) {
         
     });
 });
-
 
 // posts lat and long data to truck and/or updates status
 
@@ -180,57 +210,23 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
 
 // New seeing all favorited trucks from one given user
 router.get("/favorites", stormpath.loginRequired, function(req, res) {
-  Users.find({username: req.user.username}, function(error, doc){
+  Users.findOne({username: req.user.username}).exec(function(error, doc){
     if (error){
       res.send(error);
     } else {
-      Users.aggregate([{$unwind: "$favorites"}], function(err, newdoc){
-        if (err){
-          console.log(err);
-        } else {
-          // Doc is stored as favs.
-            var favs = newdoc;
-            // favoriteTrucks is an empty array that will store all of the user's favorite trucks.
-            var favoriteTrucks = [];
-            // Looping through the length of the results(docs aka favs) 
-            // and pushing all favorites into the favoriteTrucks array.
-            for (var i = 0; i < favs.length; i++) {
-              favoriteTrucks.push(favs[i].favorites);
-            }
-          res.send(favoriteTrucks);
-        }
-      }); 
+        res.send(doc.favoriteTrucks);
+     
     }
   });  
 });
 
-// Route to see what user looks like without populating
-router.get("/user", stormpath.loginRequired, function(req, res) {
-  // Find all users in the user collection with our User model
-  Users.find({username: req.user.username}, function(error, doc) {
-    // Send any errors to the browser
-    if (error) {
-      res.send(error);
-    }
-    // Or send the doc to the browser
-    else {
-      res.send(doc);
-    }
-  });
-});
-
 // Add favorite truck via POST route
 router.post("/addFavorites/:truckName", stormpath.loginRequired, function(req, res) {
-  console.log('favorites hit');
-  console.log('Username ' + req.user.username);
   
   var truckName = req.params.truckName;
 
-  console.log('Truck name: ' + truckName)
   // Find our user and push the new truck name into the User's favorites array
-  
-  // Find our user and push the new truck name into the User's favorites array
-  Users.update({username: req.user.username}, { $push: { favorites: truckName } }, function(err, newdoc) {
+  Users.update({username: req.user.username}, { $push: { favoriteTrucks: truckName } }, function(err, newdoc) {
     // Send any errors to the browser
     if (err) {
       res.send(err);
@@ -247,7 +243,7 @@ router.post("/removeFavorites/:truckName", stormpath.loginRequired, function(req
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
   // Find our user and pull the a truck name out of the User's favorites array
-  Users.update({username: req.user.username}, { $pull: { favorites: {truckName: truckName } } }, function(err, newdoc) {
+  Users.update({username: req.user.username}, { $pull: { favoriteTrucks: {truckName: truckName } } }, function(err, newdoc) {
       // Send any errors to the browser
       if (err) {
         res.send(err);
