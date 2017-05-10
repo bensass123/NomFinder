@@ -19,7 +19,8 @@ var UserSchema = new Schema({
   username: {
     type: String
   },
-  favorites: {
+  favoriteTrucks: {
+    // Store ObjectIds in the array
     type: Array
   }
   

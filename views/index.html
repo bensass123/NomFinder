@@ -44,20 +44,25 @@
     </style>
   </head>
   <body>
-      
-    
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <div class='container-fluid'>
         <div class='row'>
           <div class='col-md-6 col-md-offset-3 col-xs-12'>
             <div id='map'></div>
           </div>
+            <div class="col-md-6 col-md-offset-3 col-xs-12 text-center">
+              <div class="panel panel-default">
+                <div class="panel=body">
+                  <h1>Truck List</h1>
+                  <div id="list"></div>
+                </div>
+            </div>  
         </div>
     </div>
-
+     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/b2bf409704.js"></script>
     <script>
     
     // TESTING ONLY, POPULATES DB WITH TEST DATA
@@ -149,18 +154,49 @@
         for (var i = 0; i <activeTrucks.length; i++) {
           var t = activeTrucks[i];
           placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, truckIcon);
+          populateTruck(t.truckName);
+        }
+        setClickEvents();
+      });
+    }
+
+    var setClickEvents = () => {
+      $('.heart').click(function(){
+        var truckName = $(this).data("name");
+
+        if ($(this).hasClass('favorited')){
+          $(this).removeClass('favorited');
+          $.post("/removeFavorites/" + truckName, function(data, err){
+            console.log('Truck ' + truckName + ' will be removed.');
+            var truck = data;
+          }).then(() =>{
+            console.log('Truck removed.');
+          });
+        } else {
+          $(this).addClass("favorited");
+          $.post("/addFavorites/" + truckName, function(data, err){
+            console.log('Truck ' + truckName + ' will be added.');
+          }).then(() =>{
+            console.log('Truck added.');
+          });
         }
       });
     }
 
+    function populateTruck(truckName, favorite){
+      var item = $("<div>");
+      item.attr('text-center');
+      var truck = $("<p>" + truckName + "</p>");
+      item.append(truck);
+      var button = $("<button class='heart' id='fav_" + truckName + "' data-name=" + truckName + "><span><i class='fa fa-heart' aria-hidden='true'></i></span></button>");
+      item.append(button);
+      $("#list").append(item);
+    }
+
     $(document).ready(() => {
+      
         
     });
-
-    
-
-
-    
 
       
     </script>
