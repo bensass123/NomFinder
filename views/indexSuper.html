@@ -24,15 +24,10 @@
     <h1>Admin</h1>
 
 
-    <form action="/postloc" method='post'>
-        TruckName:<br>
-        <input type="text" name="truckName" value="Truck1"><br>
-        Lat:<br>
-        <input type="text" id='latPost' name="lat" value="38"><br><br>
-        Long:<br>
-        <input type="text" id='longPost' name="long" value="-97"><br><br>
-        <input type="checkbox" id="statusCheck" name="status" checked>
-        <label for="statusCheck">Active: </label>
+    <form action="/postadmin" method='post'>
+        Email:<br>
+        <input type="text" name="truckEmail" value="enter email"><br>
+        
         <input type="submit" value="Submit"> 
     </form>
 
@@ -42,28 +37,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     
 <script>
-    var setLoc = () => {
-        var startPos;
-        var geoSuccess = function(position) {
-            startPos = position;
-            $('#latPost').val(startPos.coords.latitude);
-            $('#longPost').val(startPos.coords.longitude);
-        };
-        navigator.geolocation.getCurrentPosition(geoSuccess);
-    }
 
-    var addTruck = () => {
-      $.post('/addtruck', (err) =>{
-        if(err) {console.log(err)}
-        console.log('truck added');
-      });
-    }
-
-    addTruck();
-
-    $(document).ready(() => {
-        setLoc();
-    });
   
 
 </script>
