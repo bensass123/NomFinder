@@ -21,6 +21,9 @@ var UserSchema = new Schema({
   },
   favorites: {
     type: Array
+  },
+  group: {
+    type: String
   }
   
 });
