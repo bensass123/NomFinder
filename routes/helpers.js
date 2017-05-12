@@ -20,6 +20,7 @@ module.exports = {
     },
   
     addUser: (user) => {
+        
         if (!user.phone) {
             user.phone = 55555555555;
         }
@@ -28,7 +29,8 @@ module.exports = {
             lastName: user.lastName,
             email: user.email,
             phone: user.phone,
-            username: user.username
+            username: user.username,
+            group: user.group
         }
         return Users.update({email: user.email}, obj, {upsert: true}, (err, doc) => {
             if (err) {console.log(err);}

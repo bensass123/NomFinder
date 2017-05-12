@@ -40,7 +40,7 @@ var TruckSchema = new Schema({
   group: {
     type: Array
   }
-  
+
 });
 
 // Create the Model

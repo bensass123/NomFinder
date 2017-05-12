@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 
-var Container = require('./components/Container.js');
+var Main = require('./components/Main.js');
 
 
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <Container google={window.google}></Container>
+      <div className='mapContainer'>
+        <Main google = {window.google}/>
       </div>
     );
   }

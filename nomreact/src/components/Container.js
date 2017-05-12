@@ -23,7 +23,7 @@ class Container extends React.Component {
     return {
       showingInfoWindow: false,
       activeMarker: {},
-      selectedPlace: {name: ' '}
+      selectedPlace: {name: ' ', email: ''}
     }
   }
  
@@ -33,7 +33,7 @@ class Container extends React.Component {
       activeMarker: marker,
       showingInfoWindow: true
     });
-    // console.log(props);
+    console.log(props);
   }
  
   onMapClicked(props) {
@@ -47,7 +47,7 @@ class Container extends React.Component {
 
     render() {
       return (
-            <Map google={this.props.google} onClick={this.onMapClicked} centerAroundCurrentLocation={true} zoom={14}>
+            <Map className="" style={{width: '50%', height: '50%', position: 'relative', 'marginLeft': '25%','marginTop': '10%'}} google={this.props.google} onClick={this.onMapClicked} centerAroundCurrentLocation={true} zoom={14}>
              
              {this.state.markers.map((loc,i) => (
               
@@ -60,6 +60,7 @@ class Container extends React.Component {
                   visible={this.state.showingInfoWindow}
                   onClose={this.onInfoWindowClose}>
                     <div>
+                      <h2>{this.state.selectedPlace.email}</h2>
                       <h1>{this.state.selectedPlace.name.charAt(0).toUpperCase() + this.state.selectedPlace.name.slice(1)}</h1>
                     </div>
               </InfoWindow>
