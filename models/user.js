@@ -22,6 +22,9 @@ var UserSchema = new Schema({
   favoriteTrucks: {
     // Store ObjectIds in the array
     type: Array
+  },
+  group: {
+    type: String
   }
   
 });

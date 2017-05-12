@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var TruckSchema = new Schema({
   favorites: {
-    type: Number
+    type: Array
   },
   email: {
     type: String
@@ -37,7 +37,7 @@ var TruckSchema = new Schema({
   long: {
   	type: String
   }
-  
+
 });
 
 // Create the Model
