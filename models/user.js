@@ -8,7 +8,7 @@ var UserSchema = new Schema({
   	type: String
   },
   lastName: {
-    type: String
+  	type: String
   },
   email: {
     type: String
@@ -20,13 +20,11 @@ var UserSchema = new Schema({
     type: String
   },
   favoriteTrucks: {
-    // Store ObjectIds in the array
     type: Array
   },
   group: {
     type: String
   }
-  
 });
 
 // Create the Model
