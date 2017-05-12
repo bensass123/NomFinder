@@ -14,13 +14,13 @@ router.get('/',stormpath.loginRequired, function(req, res, next) {
     
         switch (group) {
             case 'user':
-                res.sendFile(path.join(__dirname, '/../nomreact/public/index.html'));
+                res.sendFile(path.join(__dirname, '../views/index.html'));
                 break;
             case 'admin':
-                res.sendFile(path.join(__dirname, '/../nomreact/public/index.html'));
+                res.sendFile(path.join(__dirname, '../views/admin.html'));
                 break;
             case 'super':
-                res.sendFile(path.join(__dirname, '/../nomreact/public/index.html'));
+                res.sendFile(path.join(__dirname, '../views/super.html'));
                 break;
         }
     });
@@ -275,7 +275,6 @@ router.get("/favorites", stormpath.loginRequired, function(req, res) {
       res.send(error);
     } else {
         res.send(doc.favoriteTrucks);
-     
     }
   });  
 });
@@ -286,7 +285,7 @@ router.post("/addFavorites/:truckName", stormpath.loginRequired, function(req, r
   var truckName = req.params.truckName;
 
   // Find our user and push the new truck name into the User's favorites array
-  Users.update({username: req.user.username}, { $push: { favoriteTrucks: truckName } }, function(err, newdoc) {
+  Users.update({username: req.user.username}, { $addToSet: { favoriteTrucks: truckName } }, function(err, newdoc) {
     // Send any errors to the browser
     if (err) {
       res.send(err);
@@ -303,7 +302,7 @@ router.post("/removeFavorites/:truckName", stormpath.loginRequired, function(req
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
   // Find our user and pull the a truck name out of the User's favorites array
-  Users.update({username: req.user.username}, { $pull: { favoriteTrucks: {truckName: truckName } } }, function(err, newdoc) {
+  Users.update({username: req.user.username}, { $pull: { favoriteTrucks: truckName } }, function(err, newdoc) {
       // Send any errors to the browser
       if (err) {
         res.send(err);
