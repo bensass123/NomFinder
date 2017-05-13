@@ -25,7 +25,11 @@ class Favorites extends React.Component {
               <h3 className="panel-title text-center">Favorites</h3>
             </div>
             <div className="panel-body text-center">
-              <h2>{this.state.trucks.truckName}</h2>
+              <ul style={{'listStyleType':'none'}}>  
+                {this.state.trucks.map((truck, i) => {
+                  return <li key={i}><h3>{truck.truckName}</h3></li>;
+                })}
+              </ul>
             </div>
           </div>
         </div> 
@@ -33,7 +37,7 @@ class Favorites extends React.Component {
     }
 
     componentDidMount() {
-      fetch('/alltrucks')
+      fetch('/favorites')
       .then(res => res.json())
       .then(trucks => this.setState({ trucks }));
 
