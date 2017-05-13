@@ -3,13 +3,11 @@ import './App.css';
 
 var Main = require('./components/Main.js');
 
-
-
 class App extends Component {
   render() {
     return (
       <div className='mapContainer'>
-        <Main google = {window.google}/>
+        <Main google={window.google}/>
       </div>
     );
   }
