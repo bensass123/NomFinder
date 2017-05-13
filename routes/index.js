@@ -202,8 +202,8 @@ router.get("/deletetrucks", function(req, res) {
 
 router.post('/addtruck', stormpath.loginRequired, function (req, res) {
     var user = req.user;
-    helpers.addTruck(user.email, user.firstName, user.lastName, 'Truck1');
-    // email, firstName, lastName, truckName
+    helpers.addTruck(user.email, user.firstName, user.lastName, 'Truck1', user.foodType);
+    // email, firstName, lastName, truckName, foodType
 });
 
 router.post('/postadmin', stormpath.loginRequired, function (req, res) {

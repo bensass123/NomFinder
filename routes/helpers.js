@@ -3,7 +3,7 @@ var Users = require('../models/User.js');
 
 module.exports = {
 
-    addTruck: (email, firstName, lastName, truckName, status = false, lat = 1, long = 2) => {
+    addTruck: (email, firstName, lastName, truckName, status = false, lat = 1, long = 2, phone, website, foodType) => {
         var obj = {
                 email: email,
                 firstName: firstName,
@@ -11,7 +11,10 @@ module.exports = {
                 truckName: truckName,
                 status: status,
                 lat: lat,
-                long: long
+                long: long,
+                phone: phone,
+                website: website,
+                foodType: foodType
             };
         return Trucks.update({truckName: truckName}, obj, {upsert: true}, (err, doc) => {
             if (err) {console.log(err);}
