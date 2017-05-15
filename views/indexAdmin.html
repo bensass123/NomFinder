@@ -41,34 +41,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     
-<script>
-    var setLoc = () => {
-        var startPos;
-        var geoSuccess = function(position) {
-            startPos = position;
-            $('#latPost').val(startPos.coords.latitude);
-            $('#longPost').val(startPos.coords.longitude);
-        };
-        navigator.geolocation.getCurrentPosition(geoSuccess);
-    }
-
-    var addTruck = () => {
-      $.post('/addtruck', (err) =>{
-        if(err) {console.log(err)}
-        console.log('truck added');
-      });
-    }
-
-    addTruck();
-
-    $(document).ready(() => {
-        setLoc();
-    });
-  
-
-</script>
-
-
+<script src='./scripts/adminfrontend.js'></script>
 
 </body>
 

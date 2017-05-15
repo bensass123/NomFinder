@@ -14,7 +14,7 @@ router.get('/',stormpath.loginRequired, function(req, res, next) {
     
         switch (group) {
             case 'user':
-                res.sendFile(path.join(__dirname, '/../views/index.html'));
+                res.sendFile(path.join(__dirname, '/../views/index3.html'));
                 break;
             case 'admin':
                 res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
@@ -41,11 +41,13 @@ router.get("/api", function(req, res) {
 router.get('/adduser', stormpath.loginRequired, function (req,res){
     req.user.getCustomData(function(err, data) { 
         // get user group
+        console.log('adduser hit');
         var group = data.group;
         req.user.group = group;
         helpers.addUser(req.user);
         console.log('adduser hit');
         console.log(req.user);
+        res.end();
     });
 });
 
