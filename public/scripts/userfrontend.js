@@ -134,7 +134,7 @@
 
         $.get("/alltrucks", function(data, status){ 
             for (i = 0; i < data.length; i++) {
-                faveList.push("<li class='faves' key="+data[i].truckName+">"+ data[i].truckName + "<li>");
+                faveList.push("<li class='faves' key="+data[i].truckName+"y>"+ data[i].truckName + "<li>");
 
             }
             $('#navFaves').html(faveList);

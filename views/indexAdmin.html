@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,10 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>NOMfinder</title>
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="./stylesheets/animate.min.css">
+    <link rel="stylesheet" href="./stylesheets/style.css">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -20,28 +22,136 @@
 
 <body>
 
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
 
-    <h1>Admin</h1>
+
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='nav-heart glyphicon glyphicon-heart-empty'></span> <span class="caret"></span></a>
+                <ul id ='navFaves' class="dropdown-menu navFavoritesList">
+                    
+                </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    
+
+    <!--will delete-->
+
+    <!--<div class='container-fluid'>
+        <label class="switch">
+            <input type="checkbox">
+            <div id='slider' class="slider round"><span class='glyphicon glyphicon-heart sliderHeart off'></span></div>
+        </label>
+    </div>-->
+    <div class='container-fluid'>
+        <div class='row'>
+            <div class='col-md-offset-3 col-md-3'>
+                <div class="panel panel-warning adminPanel">
+                    <div class="panel-heading">
+                        Share your location with customers:
+                    </div>
+                <div class="panel-body">        
+                    <h1>Admin</h1>
 
 
-    <form action="/postloc" method='post'>
-        TruckName:<br>
-        <input type="text" name="truckName" value="Truck1"><br>
-        Lat:<br>
-        <input type="text" id='latPost' name="lat" value="38"><br><br>
-        Long:<br>
-        <input type="text" id='longPost' name="long" value="-97"><br><br>
-        <input type="checkbox" id="statusCheck" name="status" checked>
-        <label for="statusCheck">Active: </label>
-        <input type="submit" value="Submit"> 
-    </form>
+                    <form action="/postloc" method='post'>
+                        TruckName:<br>
+                        <input type="text" name="truckName" value="Truck1"><br>
+                        Lat:<br>
+                        <input type="text" id='latPost' name="lat" value="38"><br><br>
+                        Long:<br>
+                        <input type="text" id='longPost' name="long" value="-97"><br><br>
+                        <input type="checkbox" id="statusCheck" name="status" checked>
+                        <label for="statusCheck">Active: </label>
+                        <input type="submit" value="Submit"> 
+                    </form>
+                </div>
+              </div>
+            </div>
+            <div class='col-md-offset-2 col-md-4'>
+                    <div class="panel panel-warning trucksPanel">
+                        <div class="panel-heading">
+                            Active Trucks
+                        </div>
+                        <div class="panel-body">
+                            <div id="root"></div>  
+                        </div>
+                    </div>  
+            </div>
+        </div>
+    </div>
+
+
+    <!--favorties only switch-->
+    <div class='container-fluid'>
+        <div class='row'>
+          <div class='col-md-offset-3 col-md-2'>
+            <div id='slider' class='sliderDivOff'>
+                <span class='glyphicon glyphicon-heart sliderHeart off animated'></span>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+
+
+    <!--map container-->
+
+    <div class='container-fluid'>
+      <div class='row'>
+        <div class='col-md-8'>
+            <div class="panel panel-warning mapPanel">
+                <div class="panel-body">
+                    <!--the map div-->
+                    <div id='map'></div>
+                </div>
+            </div>
+        </div>
+        
+      </div>  
+    </div>
+    
+    <!--add/remove selected favorites-->
+
+    <div class='container-fluid'>
+      <div class='row'>
+        <div class=' col-md-8 favButtons'>
+            <button type="button" id='removeBtn' class="btn btn-primary favButtons"><span class='glyphicon glyphicon-minus-sign'></span></button>
+            <button type="button" id='addBtn' class="btn btn-primary favButtons"><span class='glyphicon glyphicon-heart'></span></button>
+        </div>
+      </div>  
+    </div>
+
+    
+
+    
+
+
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     
-<script src='./scripts/adminfrontend.js'></script>
+    <!--javascript for the suer frontend page-->
+    
+    <script src='./scripts/adminfrontend.js'></script>
+
+    <!--google maps api call-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG8SjBT1q6dpCND-aKpAw-5jJBa9PpvZw&callback=initMap"
+    async defer></script>
+
+
+    
+
 
 </body>
 

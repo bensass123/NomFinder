@@ -1,6 +1,8 @@
 body {
   
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: url('../images/pattern.gif');
+  
 }
 
 a {
@@ -23,18 +25,19 @@ a {
   font-size: 8.0vh;
    -webkit-text-fill-color: #f4a11b; /* Will override color (regardless of order) */
    -webkit-text-stroke-width: 1px;
-   -webkit-text-stroke-color: #black;
+   -webkit-text-stroke-color: black;
 }
 
 #map {
   height: 57vh;
+  border: 10px black;
 }
 
 .mapPanel {
   height: 60vh;
 }
 
-.favButtons{
+.favButtons {
   
 }
 
@@ -60,6 +63,7 @@ a {
   height: 8vh;
   border-radius: 20px;
   margin-bottom: 8px;
+  width: 205px;
 }
 
 .sliderDivOn {
