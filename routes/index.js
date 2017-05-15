@@ -132,7 +132,7 @@ router.get('/init', stormpath.loginRequired, function (req, res) {
 
 // TESTING - RETURN ALL TRUCKS IN DB REGARDLESS OF STATUS
 
-router.get("/alltrucks",   function(req, res) {
+router.get("/alltrucks",  stormpath.loginRequired, function(req, res) {
 
   // This GET request will search for all available trucks.
   Trucks.find({}).exec(function(err, doc) {

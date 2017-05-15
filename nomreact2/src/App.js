@@ -18,9 +18,10 @@ class App extends Component {
   }
 
   componentDidMount() {
-      fetch('/alltrucks')
-      .then(res => res.json())
-      .then(trucks => this.setState({ trucks }));
+      // this will be changed to favorites
+      fetch('/alltrucks', {credentials: 'include'})
+        .then(res => res.json())
+        .then(trucks => this.setState({ trucks }));
     }
 }
 

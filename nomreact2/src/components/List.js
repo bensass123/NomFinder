@@ -9,9 +9,14 @@ class List extends React.Component {
   render() {
     var i = 1;
     var list = this.props.trucks.map( (truck) => {
-      return <div key={i++}>{truck.truckName}</div>;
+      return <li className='List' key={i++}>{truck.truckName}</li>;
     });
-    return <div>{list}</div>;
+    return <div>
+                <ul>
+
+                {list}
+                </ul>
+            </div>;
   }
 }
 

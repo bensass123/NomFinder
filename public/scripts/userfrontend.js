@@ -80,6 +80,8 @@
         marker.setMap(map);
     }
 
+
+
     var setActiveTrucks = () => {
       //ajax call to get active trucks, then send all data to placeMarker to create Markers
       $.get("/api", function(data, status){
@@ -126,6 +128,19 @@
                 on = false;
             }
         })
+
+        //set nav heart to include favorites
+        var faveList = [];
+
+        $.get("/alltrucks", function(data, status){ 
+            for (i = 0; i < data.length; i++) {
+                faveList.push("<li class='faves' key="+data[i].truckName+">"+ data[i].truckName + "<li>");
+
+            }
+            $('#navFaves').html(faveList);
+        });
+        
+        
         
 
     });
