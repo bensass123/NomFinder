@@ -1,5 +1,0 @@
-api key
-
-AIzaSyAG8SjBT1q6dpCND-aKpAw-5jJBa9PpvZw
-
-use onDragend google-maps-react method
