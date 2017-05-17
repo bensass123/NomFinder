@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import List from './components/List.js';
+import Favorites from './components/Favorites.js';
 
 class App extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      trucks: ['bob','red','bubba']
-    }
   }
 
   render() {
     return (
-          <List trucks = {this.state.trucks} />
+          <Favorites />
+          // <List trucks = {this.state.trucks} />   /   
     );
   }
 

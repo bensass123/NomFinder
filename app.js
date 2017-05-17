@@ -70,6 +70,7 @@ app.use(stormpath.init(app, {
       nextUri: '/',
       form: {
         fields: {
+          // adjust helpers addUser funciton when adding new fields
           group: {
             enabled: true,
             label: 'User/Admin',

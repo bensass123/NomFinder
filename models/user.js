@@ -19,7 +19,7 @@ var UserSchema = new Schema({
   username: {
     type: String
   },
-  favorites: {
+  favoriteTrucks: {
     type: Array
   },
   group: {

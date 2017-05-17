@@ -1,4 +1,7 @@
-      
+    var clickedTruck;
+
+
+
     // TESTING ONLY, POPULATES DB WITH TEST DATA
     var testPopulate = () => {
       $.get('/init', (err) =>{
@@ -73,6 +76,8 @@
         });
 
         marker.addListener('click', function() {
+          clickedTruck =  marker.title;
+          console.log(clickedTruck);
           infowindow.open(map, marker);
         });
 
@@ -99,6 +104,31 @@
     
     $(document).ready(function() {
         var on = false;
+
+        $('#addBtn').click(()=> {
+            console.log(clickedTruck);
+            $.get('/addfavorites/' + clickedTruck, function(data){
+                console.log(data);
+            }).done(function() {
+                console.log( "done" );
+            })
+            .fail(function() {
+                console.log( "error" );
+            })
+        });
+
+        $('#removeBtn').click(()=> {
+            console.log(clickedTruck);
+            $.get('/delfavorites/' + clickedTruck, function(data){
+                console.log(data);
+            }).done(function() {
+                console.log( "done" );
+            })
+            .fail(function() {
+                console.log( "error" );
+            })
+        })
+
         $('#slider').click(()=>{
             if(!on) {
                 $('#slider').removeClass('sliderDivOff');
