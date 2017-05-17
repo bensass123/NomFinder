@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,43 +48,6 @@
             <div id='slider' class="slider round"><span class='glyphicon glyphicon-heart sliderHeart off'></span></div>
         </label>
     </div>-->
-    <div class='container-fluid'>
-        <div class='row'>
-            <div class='col-md-offset-3 col-md-3'>
-                <div class="panel panel-warning adminPanel">
-                    <div class="panel-heading">
-                        Share your location with customers:
-                    </div>
-                <div class="panel-body">        
-                    <h1>Admin</h1>
-
-
-                    <form action="/postloc" method='post'>
-                        TruckName:<br>
-                        <input type="text" name="truckName" value="Truck1"><br>
-                        Lat:<br>
-                        <input type="text" id='latPost' name="lat" value="38"><br><br>
-                        Long:<br>
-                        <input type="text" id='longPost' name="long" value="-97"><br><br>
-                        <input type="checkbox" id="statusCheck" name="status" checked>
-                        <label for="statusCheck">Active: </label>
-                        <input type="submit" value="Submit"> 
-                    </form>
-                </div>
-              </div>
-            </div>
-            <div class='col-md-offset-2 col-md-4'>
-                    <div class="panel panel-warning trucksPanel">
-                        <div class="panel-heading">
-                            Active Trucks
-                        </div>
-                        <div class="panel-body">
-                            <div id="root"></div>  
-                        </div>
-                    </div>  
-            </div>
-        </div>
-    </div>
 
 
     <!--favorties only switch-->
@@ -115,8 +77,8 @@
             </div>
         </div>
         
-      </div>  
-    </div>
+                    <div id="root"></div>  
+
     
     <!--add/remove selected favorites-->
 
@@ -142,17 +104,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     
     <!--javascript for the suer frontend page-->
-    
-    <script src='./scripts/adminfrontend.js'></script>
+    <script src='./scripts/userfrontend.js'></script>
 
     <!--google maps api call-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG8SjBT1q6dpCND-aKpAw-5jJBa9PpvZw&callback=initMap"
     async defer></script>
-
-
-    
-
-
 </body>
 
 </html>
+
+
+

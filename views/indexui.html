@@ -1,93 +1,49 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Simple Map</title>
-  
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+
+<head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>nomFinder</title>
+    <!-- Reset CSS -->
+    <!--<link rel="stylesheet" href="../public/cssui/reset.css">-->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!-- Stephen's Custom CSS -->
-    <!--<link rel="stylesheet" href="./cssui/reset.css">-->
-    <link rel="stylesheet" href="./cssui/styles.css">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      .container-fluid {
-        height: 100%;
-        /*width:100%;*/
-      }
-      .row{
-          height: 100%;
-          width: 100%;
-      }
-      .col-md-6 {
-        height: 100%;
-        /*width: 100%;*/
-      }
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../public/cssui/styles.css">
+</head>
 
-      .col-xs-12 {
-        height: 100%;
-        /*width: 100%;*/
-      }
-
-      .col-md-offset-3 {
-          height: 100%;
-          /*width: 100%;*/
-      }
-
-    </style>
-  </head>
-  <body>
-
-      
-    
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    
+<body>
     <div class="container">
-        <header><img id="headerImg" src="./images/nomFinder.png"></header>
+        <header><img id="headerImg" src="../public/images/nomFinder.png"></header>
         <section class="slider">
             <p>STATUS</p>
-            <img id="sliderImg" class ='img-fluid' src="">
+            <img id="sliderImg" src="">
         </section>
+        <section class="map">MAP
+            <div class='container'>
+            <div class="panel panel-default">
+                
+                <div class="panel-body"><div id='map'></div></div>
+            </div>
+            </div>
 
-        <div class='row'>
-          <div class='col-md-6 col-md-offset-3 col-xs-12'>
-            <div id='map'></div>
-          </div>
-            <div class="col-md-6 col-md-offset-3 col-xs-12 text-center">
-              <div class="panel panel-default">
-                <div class="panel=body">
-                  <h1>Truck List</h1>
-                  <div id="list"></div>
-                </div>
-            </div>  
-        </div>
-
+        </section>
         <section class="addRemove">BUTTONS</section>
         <section class="favorites">
             <p>FAVORITES</p>
             <div id="favoritesDiv"></div>
         </section>
     </div>
-
     <video id="my-video" class="video" loop="loop" muted="" width="300" height="150">
-        <source src="./vid/walking.mp4" type="video/mp4" />
+        <source src="../public/vid/walking.mp4" type="video/mp4" />
     </video>
-
-
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
     <script>
+        // original map pop script
     
     // TESTING ONLY, POPULATES DB WITH TEST DATA
     var testPopulate = () => {
@@ -101,7 +57,7 @@
     // add user to db if new
 
     var addUser = () => {
-      $.get('/adduser', (err) =>{
+      $.post('/adduser', (err) =>{
         if(err) {console.log(err)}
         console.log('user added');
       });
@@ -110,8 +66,8 @@
     addUser();
 
     var map, activeTrucks;
-    var truckIcon = 'images/truck.gif';
-    var hungryIcon = 'images/hungryguy.gif';
+    var truckIcon = '../public/images/truck.gif';
+    var hungryIcon = '../public/images/hungryguy.gif';
 
     var initMap = ()  => {
         
@@ -178,14 +134,9 @@
         for (var i = 0; i <activeTrucks.length; i++) {
           var t = activeTrucks[i];
           placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, truckIcon);
-          populateTruck(t.truckName);
         }
-        setClickEvents();
       });
     }
-
-
-
 
     $(document).ready(function() {
         //Background Video
@@ -201,9 +152,9 @@
             localStorage.setItem('truckStatus', 'offline');
             console.log("Offline set.");
         } else if (localStorage.getItem('truckStatus') === 'offline') {
-            document.getElementById("sliderImg").src = "./images/sliderRed.png";
+            document.getElementById("sliderImg").src = "../public/images/sliderRed.png";
         } else {
-            document.getElementById("sliderImg").src = "./images/sliderGreen.png";
+            document.getElementById("sliderImg").src = "../public/images/sliderGreen.png";
         };
 
         //Set event listener for slider click/tap
@@ -214,25 +165,19 @@
 
             //If slider is red, make it green and set Local Storage to online
             //Else make it red and set Local Storage to offline
-            if (statColor === "./images/sliderRed.png") {
-                $($(this).attr("src", "./images/sliderGreen.png"));
+            if (statColor === "../public/images/sliderRed.png") {
+                $($(this).attr("src", "../public/images/sliderGreen.png"));
                 localStorage.setItem('truckStatus', 'online');
             } else {
-                $($(this).attr("src", "./images/sliderRed.png"));
+                $($(this).attr("src", "../public/images/sliderRed.png"));
                 localStorage.setItem('truckStatus', 'offline');
             }
         });
     });
-
-
- </script>
-        
-
-
-    
-
+    </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG8SjBT1q6dpCND-aKpAw-5jJBa9PpvZw&callback=initMap"
     async defer></script>
-  </body>
+</body>
+
 </html>
