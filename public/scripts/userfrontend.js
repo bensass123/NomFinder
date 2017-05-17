@@ -124,7 +124,7 @@
                 console.log(data);
             }).done(function() {
                 console.log( "done" );
-                location.reload();
+                location.reload();  
             })
             .fail(function() {
                 console.log( "error" );
