@@ -37,11 +37,11 @@ class Favorites extends React.Component {
     }
 
     componentDidMount() {
-      fetch('/favorites')
+      fetch('/favorites',{credentials: 'include'})
         .then(res => res.json())
         .then(truckres => {
           this.setState({ trucks: truckres.favoriteTrucks });
-          console.log(truckres);
+          console.log(truckres);  
         });
     }
 }
