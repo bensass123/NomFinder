@@ -1,16 +1,16 @@
 {
-  "name": "truckfinder",
+  "name": "nomfinder",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
-    "express": "~4.15.2",
+    "express": "^4.15.2",
     "express-stormpath": "^3.2.0",
     "hbs": "~4.0.1",
     "mongoose": "^4.9.7",

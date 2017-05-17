@@ -18,6 +18,7 @@ module.exports = {
             else {console.log(doc);}
         })
     },
+  
     addUser: (user) => {
         
         if (!user.phone) {
@@ -35,54 +36,9 @@ module.exports = {
             if (err) {console.log(err);}
             else {console.log(doc);}
         })
-    },
-
-    // Add / remove favorites
-    updateFavorites: (clickId, truckName, username) => {
-        if($(this).hasClass("favorited")) {
-            var returnVal = console.log("Truck removed");
-            $(this).removeClass("favorited", returnVal);
-
-            var obj = {
-                clickId: clickId,
-                username: username,
-                truckName: truckName
-            };
-            // Find our user and pull the a truck name out of the User's favorites array
-            User.update({username: username}, { $pull: { favorites: {truckName: truckName } } }, function(err, newdoc) {
-                // Send any errors to the browser
-                if (err) {
-                  res.send(err);
-                }
-                // Or send the newdoc to the browser
-                else {
-                  res.send(newdoc);
-                }
-            });
-            
-        } else {
-                var returnVal = console.log("Truck added");
-                $(this).addClass("favorited", returnVal);
-                
-                var obj = {
-                clickId: clickId,
-                username: username,
-                truckName: truckName
-            };
-
-            // Find our user and push the new truck name into the User's favorites array
-            User.update({username: username}, { $push: { favorites: truckName } }, function(err, newdoc) {
-                // Send any errors to the browser
-                if (err) {
-                  res.send(err);
-                }
-                // Or send the newdoc to the browser
-                else {
-                  res.send(newdoc);
-                }
-            });
-        }   
     }
+
+
 
 }
 

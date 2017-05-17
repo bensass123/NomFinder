@@ -8,7 +8,7 @@ var UserSchema = new Schema({
   	type: String
   },
   lastName: {
-    type: String
+  	type: String
   },
   email: {
     type: String
@@ -25,7 +25,6 @@ var UserSchema = new Schema({
   group: {
     type: String
   }
-  
 });
 
 // Create the Model

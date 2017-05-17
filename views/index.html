@@ -47,6 +47,7 @@
     </style>
   </head>
   <body>
+
       
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -60,10 +61,18 @@
             <p>STATUS</p>
             <img id="sliderImg" class ='img-fluid' src="">
         </section>
+
         <div class='row'>
           <div class='col-md-6 col-md-offset-3 col-xs-12'>
             <div id='map'></div>
           </div>
+            <div class="col-md-6 col-md-offset-3 col-xs-12 text-center">
+              <div class="panel panel-default">
+                <div class="panel=body">
+                  <h1>Truck List</h1>
+                  <div id="list"></div>
+                </div>
+            </div>  
         </div>
 
         <section class="addRemove">BUTTONS</section>
@@ -72,9 +81,11 @@
             <div id="favoritesDiv"></div>
         </section>
     </div>
+
     <video id="my-video" class="video" loop="loop" muted="" width="300" height="150">
         <source src="./vid/walking.mp4" type="video/mp4" />
     </video>
+
 
     <script>
     
@@ -167,9 +178,12 @@
         for (var i = 0; i <activeTrucks.length; i++) {
           var t = activeTrucks[i];
           placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, truckIcon);
+          populateTruck(t.truckName);
         }
+        setClickEvents();
       });
     }
+
 
 
 
@@ -213,9 +227,6 @@
 
  </script>
         
-
-
-    
 
 
     

@@ -100,13 +100,35 @@ router.get('/setuser',stormpath.loginRequired, function(req, res, next) {
     });
 });
 
+router.get('/adduser', stormpath.loginRequired, function(req,res){
+  var username = req.user.username;
+  var firstName = req.user.firstName;
+  var lastName = req.user.lastName;
+  var email = req.user.email;
+  helpers.addUser(username, firstName, lastName, email);
+  res.end();
+});
+
+// Route to see what user looks like without populating
+router.get("/user", stormpath.loginRequired, function(req, res) {
+  // Find all users in the user collection with our User model
+  Users.find({username: req.user.username}, function(error, doc) {
+    // Send any errors to the browser
+    if (error) {
+      res.send(error);
+    }
+    // Or send the doc to the browser
+    else {
+      res.send(doc);
+    }
+  });
+});
+
 // TESTING - TEMP ROUTE FOR USER FRONTEND
 
 router.get('/userfrontend',stormpath.loginRequired, function(req, res, next) {
     res.sendFile(path.join(__dirname, '/../views/index.html'));
-})
-
-
+});
 
 // testing - route to populate db w test data, use update instead, upsert
 
@@ -128,7 +150,21 @@ router.get('/init', stormpath.loginRequired, function (req, res) {
 });
 
 
-
+// This is the route we will send GET requests to retrieve our most recent click data.
+ // We will call this route the moment our page gets rendered
+ router.get("/api", function(req, res) {
+ 
+   // This GET request will search for all available trucks.
+   Trucks.find({status: true}).exec(function(err, doc) {
+ 
+     if (err) {
+       console.log(err);
+     }
+     else {
+       res.send(doc);
+     }
+   });
+ });
 
 // TESTING - RETURN ALL TRUCKS IN DB REGARDLESS OF STATUS
 
@@ -146,6 +182,15 @@ router.get("/alltrucks",  function(req, res) {
   });
 });
 
+router.get("/truckInfo/:truckName", function(req, res){
+  Trucks.findOne({truckName: req.params.truckName}).exec(function(err, doc){
+    if (err){
+      console.log(err);
+    } else {
+      res.send(doc);
+    }
+  });
+});
 // TESTING, DROP ALL TRUCKS DOCUMENTS
 
 router.get("/deletetrucks", function(req, res) {
@@ -153,6 +198,7 @@ router.get("/deletetrucks", function(req, res) {
         res.send('trucks removed');
     });
 });
+
 
 router.post('/addtruck', stormpath.loginRequired, function (req, res) {
     var user = req.user;
@@ -230,39 +276,28 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
 
 // New seeing all favorited trucks from one given user
 router.get("/favorites", stormpath.loginRequired, function(req, res) {
+
   Users.findOne({username:req.user.username},  'favoriteTrucks', function (err, doc) {
     if (err) return handleError(err);
     console.log(doc.favoriteTrucks);
 
     var obj = {
         favoriteTrucks: doc.favoriteTrucks
+
     }
 
     res.send(obj);
   });
 });
 
-// Route to see what user looks like without populating
-router.get("/user", function(req, res) {
-  // Find all users in the user collection with our User model
-  User.find({username: req.user.username}, function(error, doc) {
-    // Send any errors to the browser
-    if (error) {
-      res.send(error);
-    }
-    // Or send the doc to the browser
-    else {
-      res.send(doc);
-    }
-  });
-});
-
 // Add favorite truck via POST route
+
 router.get("/addfavorites/:truckName",stormpath.loginRequired, function(req, res) {
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
   console.log('truck name: ' + truckName);
   console.log('user:       ' + req.user.username);
+
   // Find our user and push the new truck name into the User's favorites array
   Users.update({username: req.user.username}, { $addToSet: { favoriteTrucks: truckName } }, function(err, newdoc) {
     // Send any errors to the browser
@@ -279,7 +314,9 @@ router.get("/addfavorites/:truckName",stormpath.loginRequired, function(req, res
 });
 
 // Remove favorite truck via POST route
+
 router.get("/delfavorites/:truckName", stormpath.loginRequired, function(req, res) {
+
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
   console.log(req.user.username);
