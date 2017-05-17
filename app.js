@@ -70,11 +70,39 @@ app.use(stormpath.init(app, {
       nextUri: '/',
       form: {
         fields: {
+          phoneNumber: {
+            enabled: true,
+            label: 'Phone Number',
+            placeholder: '555-555-5555',
+            required: true,
+            type: "text"
+          },
           group: {
             enabled: true,
             label: 'User/Admin',
             placeholder: 'user',
             required: true,
+            type: "text"
+          },
+          truckName: {
+            enabled: true,
+            label: 'TRUCKS ONLY! Truck Name',
+            placeholder: 'Burger Time',
+            required: false,
+            type: "text"
+          },
+          foodType: {
+            enabled: true,
+            label: 'TRUCKS ONLY! Food Type',
+            placeholder: 'What type of food do you serve?',
+            required: false,
+            type: "text"
+          },
+          website: {
+            enabled: true,
+            label: 'TRUCKS ONLY! Website',
+            placeholder: 'www.website.com',
+            required: false,
             type: "text"
           }
         }
