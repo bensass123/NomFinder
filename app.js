@@ -70,7 +70,7 @@ app.use(stormpath.init(app, {
       nextUri: '/',
       form: {
         fields: {
-          phoneNumber: {
+          phone: {
             enabled: true,
             label: 'Phone Number',
             placeholder: '555-555-5555',
