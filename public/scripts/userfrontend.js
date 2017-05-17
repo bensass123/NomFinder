@@ -103,6 +103,14 @@
     
     
     $(document).ready(function() {
+
+        (function() {
+            var video = document.getElementById("my-video");
+            video.addEventListener("canplay", function() {
+                video.play();
+            });
+        })();
+        
         var on = false;
 
         $('#addBtn').click(()=> {

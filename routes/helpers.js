@@ -24,13 +24,17 @@ module.exports = {
         if (!user.phone) {
             user.phone = 55555555555;
         }
+
+        // need to update to account if favetrucks already exists
+
         var obj = {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
             phone: user.phone,
             username: user.username,
-            group: user.group
+            group: user.group,
+            favoriteTrucks: []
         }
         return Users.update({email: user.email}, obj, {upsert: true}, (err, doc) => {
             if (err) {console.log(err);}

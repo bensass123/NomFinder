@@ -278,15 +278,16 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
 router.get("/favorites", stormpath.loginRequired, function(req, res) {
 
   Users.findOne({username:req.user.username},  'favoriteTrucks', function (err, doc) {
-    if (err) return handleError(err);
-    console.log(doc.favoriteTrucks);
-
-    var obj = {
-        favoriteTrucks: doc.favoriteTrucks
-
+    if (err) {
+        return handleError(err)
     }
+    else {
+        var obj = {
+            favoriteTrucks: doc.favoriteTrucks
 
-    res.send(obj);
+        }
+        res.send(obj);
+    }
   });
 });
 
