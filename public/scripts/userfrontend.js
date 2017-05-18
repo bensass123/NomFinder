@@ -116,10 +116,11 @@
         $('#addBtn').click(()=> {
             console.log(clickedTruck);
             $.get('/addfavorites/' + clickedTruck, function(data){
+                console.log('addtruck clicked')
                 console.log(data);
             }).done(function() {
                 console.log( "done" );
-                location.reload();
+                // location.reload();
             })
             .fail(function() {
                 console.log( "error" );

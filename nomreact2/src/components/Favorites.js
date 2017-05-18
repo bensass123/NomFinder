@@ -44,6 +44,10 @@ class Favorites extends React.Component {
           console.log(truckres);  
         });
     }
+
+    // shouldComponentUpdate() {
+
+    // }
 }
 
 module.exports = Favorites;

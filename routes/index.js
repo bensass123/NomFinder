@@ -101,11 +101,8 @@ router.get('/setuser',stormpath.loginRequired, function(req, res, next) {
 });
 
 router.get('/adduser', stormpath.loginRequired, function(req,res){
-  var username = req.user.username;
-  var firstName = req.user.firstName;
-  var lastName = req.user.lastName;
-  var email = req.user.email;
-  helpers.addUser(username, firstName, lastName, email);
+
+  helpers.addUser(req.user);
   res.end();
 });
 
@@ -294,6 +291,10 @@ router.get("/favorites", stormpath.loginRequired, function(req, res) {
 // Add favorite truck via POST route
 
 router.get("/addfavorites/:truckName",stormpath.loginRequired, function(req, res) {
+
+
+    // need to add functionality to instantiate the array if it doesnt exist - todo
+    
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
   console.log('truck name: ' + truckName);
