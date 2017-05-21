@@ -1,4 +1,5 @@
     var clickedTruck;
+    var markers = [];
 
 
 
@@ -58,6 +59,8 @@
         marker.setMap(map);
     }
 
+
+
     var placeMarker = (lat, long, truckName, icon) => {
       console.log('placemarker run');
       console.log(lat, long, truckName, icon);
@@ -75,6 +78,8 @@
             map: map
         });
 
+        markers.push(marker);
+
         marker.addListener('click', function() {
           clickedTruck =  marker.title;
           console.log(clickedTruck);
@@ -90,7 +95,7 @@
     var setActiveTrucks = () => {
       //ajax call to get active trucks, then send all data to placeMarker to create Markers
       $.get("/api", function(data, status){
-        console.log("Data: " + JSON.stringify(data) + "\nStatus: " + JSON.stringify(status));
+        console.log("Data: " + JSON.stringify(data) + " Status: " + JSON.stringify(status));
         activeTrucks = data;
       }).then(() => {
         for (var i = 0; i <activeTrucks.length; i++) {
@@ -98,6 +103,48 @@
           placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, truckIcon);
         }
       });
+    }
+
+    // clears all activeTrucks markers
+    var clearMarkers = () => {
+        for (var i=0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+    }
+
+    // clear matching markers
+    var clearNonFavorites = (arr) => {
+        console.log(arr);
+        for (var i = 0; i < arr.length; i++) {
+            var f = arr[i];
+            for (var j = 0; j < markers.length; j++) {
+                console.log(markers[j].title + '  ' + arr[i]);
+                console.log(markers[j].title === arr[i]);
+                if (markers[j].title === arr[i]) {
+                    markers[j].setMap(map);
+                }
+            }
+        }
+    } 
+
+
+
+    var faveMarkers = [];
+
+    // place favorites
+
+    var placeFavorites = () => {
+
+        // clear all
+        clearMarkers();
+
+        $.get("/favorites", function(data, status){ 
+            faveMarkers = data;
+            console.log(faveMarkers);
+        }).then(() => {
+            //need to compare trucknames with all markers (marker.title) and remove markers where truck name doesnt match
+            clearNonFavorites(faveMarkers.favoriteTrucks);
+        });
     }
     
     
@@ -120,7 +167,7 @@
                 console.log(data);
             }).done(function() {
                 console.log( "done" );
-                // location.reload();
+                location.reload();
             })
             .fail(function() {
                 console.log( "error" );
@@ -142,6 +189,7 @@
 
         $('#slider').click(()=>{
             if(!on) {
+                
                 $('#slider').removeClass('sliderDivOff');
                 $('#slider').addClass('sliderDivOn');
                 $('.sliderHeart').removeClass('off');
@@ -154,7 +202,10 @@
                 // $(".sliderHeart").animate({fontSize: '8vh'}, "slow");
                 // $(".sliderHeart").animate({fontSize: '5vh'}, "slow");
                 on = true;
+                placeFavorites();
+                
             } else{
+                
                 $('#slider').removeClass('sliderDivOn');
                 $('#slider').addClass('sliderDivOff');
                 $('.sliderHeart').addClass('off');
@@ -167,11 +218,12 @@
                 // $(".sliderHeart").animate({fontSize: '8vh'}, "slow");
                 // $(".sliderHeart").animate({fontSize: '5vh'}, "slow");
                 on = false;
+                setActiveTrucks();
             }
         })
 
         //set nav heart to include favorites
-        var faveList = [];
+        
 
         $.get("/alltrucks", function(data, status){ 
             for (i = 0; i < data.length; i++) {
@@ -180,6 +232,8 @@
             }
             $('#navFaves').html(faveList);
         });
+
+        
         
         
         

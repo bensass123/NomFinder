@@ -1,7 +1,7 @@
 body {
   
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background: url('../images/pattern.gif');
+  background: url('../images/bg.jpg');
   
 }
 
@@ -76,7 +76,7 @@ a {
   height: 8vh;
   border-radius: 20px;
   margin-bottom: 8px;
-  width: 205px;
+  width: 226px;
 }
 
 .sliderDivOn {

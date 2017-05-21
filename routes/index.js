@@ -188,6 +188,8 @@ router.get("/truckInfo/:truckName", function(req, res){
     }
   });
 });
+
+
 // TESTING, DROP ALL TRUCKS DOCUMENTS
 
 router.get("/deletetrucks", function(req, res) {
