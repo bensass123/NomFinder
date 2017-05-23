@@ -85,27 +85,6 @@ app.use(stormpath.init(app, {
               placeholder: 'user',
               required: true,
               type: "text"
-            },
-            truckName: {
-              enabled: true,
-              label: 'TRUCKS! Truck Name',
-              placeholder: 'Burger Time',
-              required: false,
-              type: "text"
-            },
-            foodType: {
-              enabled: true,
-              label: 'TRUCKS! Food Type',
-              placeholder: 'What type of food do you serve?',
-              required: false,
-              type: "text"
-            },
-            website: {
-              enabled: true,
-              label: 'TRUCKS! Website',
-              placeholder: 'www.website.com',
-              required: false,
-              type: "text"
             }
         }
       }

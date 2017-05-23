@@ -1,3 +1,13 @@
+    $(".dropdown-toggle").dropdown();
+
+   // logout button
+    $('#logout').click(()=>{
+        $.post('/logout');
+        setTimeout(()=>{
+            location.reload();
+        }, 400);
+    });
+
    // TESTING ONLY, POPULATES DB WITH TEST DATA
     var testPopulate = () => {
       $.get('/init', (err) =>{

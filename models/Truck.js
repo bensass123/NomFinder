@@ -37,6 +37,9 @@ var TruckSchema = new Schema({
   long: {
   	type: String
   }, 
+  pic: {
+    type: String
+  },
   group: {
     type: Array
   }

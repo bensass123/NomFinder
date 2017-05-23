@@ -74,6 +74,18 @@ a {
   width: 40%;
 }
 
+#truckPic{
+  max-width: 200px;
+  display: block;
+  margin: auto;
+}
+
+/*Favorites Panel*/
+
+#favList > li{
+  list-style: none;
+  margin-left: -43px;
+}
 
 
 
@@ -82,8 +94,11 @@ a {
 #slider{
   height: 8vh;
   border-radius: 20px;
-  margin-bottom: 8px;
   width: 226px;
+  display: block;
+  margin: auto;
+  margin-bottom: 8px;
+
 }
 
 .sliderDivOn {
@@ -111,12 +126,6 @@ a {
   position: relative;
   /*left: 32px;
   top: 9px;*/
-}
-
-/*Favorites Panel*/
-
-#favList{
-  list-style: none;
 }
 
 /*

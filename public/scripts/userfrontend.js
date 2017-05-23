@@ -1,5 +1,13 @@
    $(".dropdown-toggle").dropdown();
 
+   // logout button
+    $('#logout').click(()=>{
+        $.post('/logout');
+        setTimeout(()=>{
+            location.reload();
+        }, 400);
+    });
+
     var clickedTruck;
     var markers = [];
 

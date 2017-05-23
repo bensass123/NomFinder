@@ -37,25 +37,29 @@
         </div>
     </nav>
 <div class="container-fluid">
-   <div class="col-md-12">
-    <div class="jumbotron">
-    <!-- This set's the Jumbotrons header. -->
-       <div class="page-header">
-         <h1>{{user.truckName}}</h1>
-       </div>
-     
-   <!-- Status and Other Information. -->
-     <h2>Available:</h2>
-     <p>{{user.status}}</p>
-     <h2>Food Type:</h2>
-     <p>{{user.foodType}}</p>
-     <h2>Website:</h2>
-     <a href='{{user.website}}' target='_blank'><p>{{user.website}}</p></a>
-     <h2>Phone:</h2>
-     <a href="tel:{{user.phone}}"><span class="glyphicon glyphicon-phone glyphicon-align-left" aria-hidden="true"></span></a>
+    <div class='row'>
+        <div class="col-xs-12 text-center">
+            <div class="jumbotron">
+
+                <img id="truckPic" src="{{user.pic}}" alt="foodtruck">
+                
+                <div class="page-header"><h1>{{user.truckName}}</h1></div>
+           <!-- Status and Other Information. -->
+                 <h2>Available:</h2>
+                 <p>{{user.status}}</p>
+                 <h2>Food Type:</h2>
+                 <p>{{user.foodType}}</p>
+                 <h2>Website:</h2>
+                 <a href='{{user.website}}' target='_blank'><p>Click Here</p></a>
+                 <h2>Phone:</h2>
+                 <a href="tel:{{user.phone}}"><span class="glyphicon glyphicon-phone glyphicon-align-left" aria-hidden="true"></span></a>
+            </div>
+        <!-- This set's the Jumbotrons header. -->      
+        </div>
     </div>
+</div>
        <!-- jQuery -->
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>  
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
        <!-- Bootstrap JavaScript -->
        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

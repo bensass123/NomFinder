@@ -7,27 +7,27 @@ var Users = require('../models/User.js');
 var helpers = require('./helpers.js');
 
 /* GET home page. */
-router.get('/',stormpath.loginRequired, function(req, res, next) {
-    req.user.getCustomData(function(err, data) { 
-        // get user group
-        var group = data.group;
+// router.get('/',stormpath.loginRequired, function(req, res, next) {
+//     req.user.getCustomData(function(err, data) { 
+//         // get user group
+//         var group = data.group;
     
-        switch (group) {
-            case 'user':
-                res.sendFile(path.join(__dirname, '/../views/index3.html'));
-                break;
-            case 'admin':
-                res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
-                break;
-            case 'super':
-                res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
-                break;
-        }
-    });
-});
+//         switch (group) {
+//             case 'user':
+//                 res.sendFile(path.join(__dirname, '/../views/index3.html'));
+//                 break;
+//             case 'admin':
+//                 res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
+//                 break;
+//             case 'super':
+//                 res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
+//                 break;
+//         }
+//     });
+// });
 
 // View Page
-router.get("/view", stormpath.loginRequired, function (req, res){
+router.get("/", stormpath.loginRequired, function (req, res){
   req.user.getCustomData(function(err, data) { 
         // get user group
         var group = data.group;
@@ -42,17 +42,17 @@ router.get("/view", stormpath.loginRequired, function (req, res){
                 // Or send the doc to the browser
                 else {
                   console.log(doc);
-                  res.render("home", {user: doc});
+                  res.render("home", {'user': doc});
                 }
               });
                 break;
             case 'admin':
 
-              Trucks.findOne({truckName: req.user.username}).exec(function(err, doc){
+              Trucks.findOne({email: req.user.username}).exec(function(err, doc){
                 if (err){
                   console.log(err);
                 } else {
-                  res.render("admin", {user: doc});
+                  res.render("admin", {'user': doc});
                 }
               });
                 break;
@@ -79,16 +79,16 @@ router.get("/profile", stormpath.loginRequired, function (req, res){
                 }
                 // Or send the doc to the browser
                 else {
-                  res.render("user", {user: doc});
+                  res.render("user", {'user': doc});
                 }
               });
                 break;
             case 'admin':
-              Trucks.findOne({truckName: req.user.username}).exec(function(err, doc){
+              Trucks.findOne({email: req.user.username}).exec(function(err, doc){
                 if (err){
                   console.log(err);
                 } else {
-                  res.render("truck", {user: doc});
+                  res.render("truck", {'user': doc});
                 }
               });
                 break;
@@ -97,9 +97,18 @@ router.get("/profile", stormpath.loginRequired, function (req, res){
 });
 
 
-// router.get("/logout", stormpath.loginRequired, function (req, res, next){
-//   req.user.
-// });
+router.get("/profile/:truckName", stormpath.loginRequired, function (req, res){
+  var truck = req.params.truckName;
+  truck = truck.replace(/%20/g, "")
+
+  Trucks.findOne({truckName: truck}).exec(function(err, doc){
+    if (err){
+      console.log(err);
+    } else {
+      res.render("profile", {'user': doc});
+    }
+  });
+});
 
 router.get("/api", function(req, res) {
    // This GET request will search for all available trucks.
@@ -211,10 +220,10 @@ router.get('/userfrontend',stormpath.loginRequired, function(req, res, next) {
 // testing - route to populate db w test data, use update instead, upsert
 
 router.get('/init', stormpath.loginRequired, function (req, res) {
-    helpers.addTruck('email1', 'firstname1', 'lastname1', 'OooWee BBQ', true, 35.0535596, -80.82116959999999, "908-345-6883", "http://www.eatoooweebbq.com", "BBQ", "Here from 1-6pm");
-    helpers.addTruck('email2', 'firstname2', 'lastname2', 'Tin Kitchen', true, 35.1535596, -80.82116959999999, "", "http://www.tinkitchenfoodtruck.com", "Fusion", "Here from 4-8pm");
-    helpers.addTruck('email3', 'firstname3', 'lastname3', 'Papi Queso', true, 35.0535596, -80.92316959999999, "", "http://www.papiquesotruck.com", "Sandwiches", "Here from 3-7:30pm");
-    helpers.addTruck('email4', 'firstname4', 'lastname4', 'A Bao Time', true, 35.2535596, -80.8246959999999, "704-310-1262", "http://www.facebook.com/a-bao-time", "Asian", "Here from 2:30-6pm");
+    helpers.addTruck('email1', 'firstname1', 'lastname1', 'OooWee BBQ', true, 35.0535596, -80.82116959999999, "908-345-6883", "http://www.eatoooweebbq.com", "BBQ", "Here from 1-6pm", "https://img.clipartfest.com/2ea0638057ea2b18bf418bb336605f65_food-truck-court-is-cancelled-food-truck-clipart-transparent_488-349.png");
+    helpers.addTruck('email2', 'firstname2', 'lastname2', 'Tin Kitchen', true, 35.1535596, -80.82116959999999, "", "http://www.tinkitchenfoodtruck.com", "Fusion", "Here from 4-8pm", "https://img.clipartfest.com/2ea0638057ea2b18bf418bb336605f65_food-truck-court-is-cancelled-food-truck-clipart-transparent_488-349.png");
+    helpers.addTruck('email3', 'firstname3', 'lastname3', 'Papi Queso', true, 35.0535596, -80.92316959999999, "", "http://www.papiquesotruck.com", "Sandwiches", "Here from 3-7:30pm", "https://img.clipartfest.com/2ea0638057ea2b18bf418bb336605f65_food-truck-court-is-cancelled-food-truck-clipart-transparent_488-349.png");
+    helpers.addTruck('email4', 'firstname4', 'lastname4', 'A Bao Time', true, 35.2535596, -80.8246959999999, "704-310-1262", "http://www.facebook.com/a-bao-time", "Asian", "Here from 2:30-6pm", "https://img.clipartfest.com/2ea0638057ea2b18bf418bb336605f65_food-truck-court-is-cancelled-food-truck-clipart-transparent_488-349.png");
 
     //return all trucks
     Trucks.find({}).exec(function(err, doc) {
@@ -282,7 +291,7 @@ router.get("/deletetrucks", function(req, res) {
 
 router.post('/addtruck', stormpath.loginRequired, function (req, res) {
     var user = req.user;
-    helpers.addTruck(user.email, user.firstName, user.lastName, 'Truck1');
+    helpers.addTruck(user.email, user.firstName, user.lastName);
     // email, firstName, lastName, truckName
 });
 
