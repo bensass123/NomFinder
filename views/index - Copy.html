@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!-- Stephen's Custom CSS -->
-    <!--<link rel="stylesheet" href="./cssui/reset.css">-->
-    <link rel="stylesheet" href="./cssui/styles.css">
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -47,45 +44,19 @@
     </style>
   </head>
   <body>
-
       
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    
-    <div class="container">
-        <header><img id="headerImg" src="./images/nomFinder.png"></header>
-        <section class="slider">
-            <p>STATUS</p>
-            <img id="sliderImg" class ='img-fluid' src="">
-        </section>
-
+    <div class='container-fluid'>
         <div class='row'>
           <div class='col-md-6 col-md-offset-3 col-xs-12'>
             <div id='map'></div>
           </div>
-            <div class="col-md-6 col-md-offset-3 col-xs-12 text-center">
-              <div class="panel panel-default">
-                <div class="panel=body">
-                  <h1>Truck List</h1>
-                  <div id="list"></div>
-                </div>
-            </div>  
         </div>
-
-        <section class="addRemove">BUTTONS</section>
-        <section class="favorites">
-            <p>FAVORITES</p>
-            <div id="favoritesDiv"></div>
-        </section>
     </div>
-
-    <video id="my-video" class="video" loop="loop" muted="" width="300" height="150">
-        <source src="./vid/walking.mp4" type="video/mp4" />
-    </video>
-
 
     <script>
     
@@ -178,60 +149,21 @@
         for (var i = 0; i <activeTrucks.length; i++) {
           var t = activeTrucks[i];
           placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, truckIcon);
-          populateTruck(t.truckName);
         }
-        setClickEvents();
       });
     }
 
-
-
-
-    $(document).ready(function() {
-        //Background Video
-        (function() {
-            var video = document.getElementById("my-video");
-            video.addEventListener("canplay", function() {
-                video.play();
-            });
-        })();
-
-        //Check the status of the truck from user's last selection via Local Storage
-        if (!localStorage.getItem('truckStatus')) {
-            localStorage.setItem('truckStatus', 'offline');
-            console.log("Offline set.");
-        } else if (localStorage.getItem('truckStatus') === 'offline') {
-            document.getElementById("sliderImg").src = "./images/sliderRed.png";
-        } else {
-            document.getElementById("sliderImg").src = "./images/sliderGreen.png";
-        };
-
-        //Set event listener for slider click/tap
-        $("#sliderImg").click(function() {
-
-            //Get the src of image for slider status
-            let statColor = $(this).attr("src");
-
-            //If slider is red, make it green and set Local Storage to online
-            //Else make it red and set Local Storage to offline
-            if (statColor === "./images/sliderRed.png") {
-                $($(this).attr("src", "./images/sliderGreen.png"));
-                localStorage.setItem('truckStatus', 'online');
-            } else {
-                $($(this).attr("src", "./images/sliderRed.png"));
-                localStorage.setItem('truckStatus', 'offline');
-            }
-        });
-    });
-
-
- </script>
+    $(document).ready(() => {
         
-
+    });
 
     
 
 
+    
+
+      
+    </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG8SjBT1q6dpCND-aKpAw-5jJBa9PpvZw&callback=initMap"
     async defer></script>
   </body>

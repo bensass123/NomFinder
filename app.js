@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var stormpath = require('express-stormpath');
 var mongoose = require('mongoose');
+var handlebars = require("express-handlebars");
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -23,7 +24,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.engine("handlebars", handlebars({defaultLayout: "main"}));
+app.set("view engine", "handlebars");
 app.use('/', index);
 app.use('/users', users);
 
@@ -70,41 +72,41 @@ app.use(stormpath.init(app, {
       nextUri: '/',
       form: {
         fields: {
-          phone: {
-            enabled: true,
-            label: 'Phone Number',
-            placeholder: '555-555-5555',
-            required: true,
-            type: "text"
-          },
-          group: {
-            enabled: true,
-            label: 'User/Admin',
-            placeholder: 'user',
-            required: true,
-            type: "text"
-          },
-          truckName: {
-            enabled: true,
-            label: 'TRUCKS ONLY! Truck Name',
-            placeholder: 'Burger Time',
-            required: false,
-            type: "text"
-          },
-          foodType: {
-            enabled: true,
-            label: 'TRUCKS ONLY! Food Type',
-            placeholder: 'What type of food do you serve?',
-            required: false,
-            type: "text"
-          },
-          website: {
-            enabled: true,
-            label: 'TRUCKS ONLY! Website',
-            placeholder: 'www.website.com',
-            required: false,
-            type: "text"
-          }
+            phone: {
+              enabled: true,
+              label: 'Phone Number',
+              placeholder: '555-555-5555',
+              required: true,
+              type: "text"
+            },
+            group: {
+              enabled: true,
+              label: 'User/Admin',
+              placeholder: 'user',
+              required: true,
+              type: "text"
+            },
+            truckName: {
+              enabled: true,
+              label: 'TRUCKS! Truck Name',
+              placeholder: 'Burger Time',
+              required: false,
+              type: "text"
+            },
+            foodType: {
+              enabled: true,
+              label: 'TRUCKS! Food Type',
+              placeholder: 'What type of food do you serve?',
+              required: false,
+              type: "text"
+            },
+            website: {
+              enabled: true,
+              label: 'TRUCKS! Website',
+              placeholder: 'www.website.com',
+              required: false,
+              type: "text"
+            }
         }
       }
     }

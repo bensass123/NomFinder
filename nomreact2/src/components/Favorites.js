@@ -11,15 +11,15 @@ class Favorites extends React.Component {
       // this.onTruckClick = this.onTruckClick.bind(this);
     }
 
-  getInitialState() {
-    return {
-      selectedTruck: {truckName: ' '}
-    }
-  }
+  // getInitialState() {
+  //   return {
+  //     selectedTruck: {truckName: ' '}
+  //   }
+  // }
 
   render(){
       return (
-        <div className="col-md-6">
+        <div className="col-md-4">
           <div className="panel panel-default">
             <div className="panel-heading">
               <h3 className="panel-title text-center">Favorites</h3>
@@ -27,7 +27,7 @@ class Favorites extends React.Component {
             <div className="panel-body text-center">
               <ul style={{'listStyleType':'none'}}>  
                 {this.state.trucks.map((truck, i) => {
-                  return <li key={i}><h3>{truck.truckName}</h3></li>;
+                  return <li key={i}><h3>{truck}</h3></li>;
                 })}
               </ul>
             </div>
@@ -37,11 +37,17 @@ class Favorites extends React.Component {
     }
 
     componentDidMount() {
-      fetch('/favorites')
-      .then(res => res.json())
-      .then(trucks => this.setState({ trucks }));
-
+      fetch('/favorites',{credentials: 'include'})
+        .then(res => res.json())
+        .then(truckres => {
+          this.setState({ trucks: truckres.favoriteTrucks });
+          console.log(truckres);  
+        });
     }
+
+    // shouldComponentUpdate() {
+
+    // }
 }
 
 module.exports = Favorites;

@@ -4,8 +4,8 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var TruckSchema = new Schema({
-  favorites: {
-    type: Array
+  message: {
+    type: String
   },
   email: {
     type: String

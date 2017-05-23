@@ -10,13 +10,11 @@ var helpers = require('./helpers.js');
 router.get('/',stormpath.loginRequired, function(req, res, next) {
     req.user.getCustomData(function(err, data) { 
         // get user group
-        var group = data.group
+        var group = data.group;
     
         switch (group) {
             case 'user':
-
-
-                res.sendFile(path.join(__dirname, '/../views/index.html'));
+                res.sendFile(path.join(__dirname, '/../views/index3.html'));
                 break;
             case 'admin':
                 res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
@@ -27,6 +25,49 @@ router.get('/',stormpath.loginRequired, function(req, res, next) {
         }
     });
 });
+
+// View Page
+router.get("/view", stormpath.loginRequired, function (req, res){
+  req.user.getCustomData(function(err, data) { 
+        // get user group
+        var group = data.group;
+    
+        switch (group) {
+            case 'user':
+                res.render("view", {user: data});
+                break;
+            case 'admin':
+                res.render("admin", {user: data});
+                break;
+            // case 'super':
+                // res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
+                // break;
+        }
+    });
+});
+
+
+// User or Truck Profile
+router.get("/profile", stormpath.loginRequired, function (req, res){
+  req.user.getCustomData(function(err, data) { 
+        // get user group
+        var group = data.group;
+    
+        switch (group) {
+            case 'user':
+                res.render("user", {user: data});
+                break;
+            case 'admin':
+                res.render("truck", {user: data});
+                break;
+        }
+    });
+});
+
+
+// router.get("/logout", stormpath.loginRequired, function (req, res, next){
+//   req.user.
+// });
 
 router.get("/api", function(req, res) {
    // This GET request will search for all available trucks.
@@ -43,11 +84,13 @@ router.get("/api", function(req, res) {
 router.get('/adduser', stormpath.loginRequired, function (req,res){
     req.user.getCustomData(function(err, data) { 
         // get user group
+        console.log('adduser hit');
         var group = data.group;
         req.user.group = group;
         helpers.addUser(req.user);
         console.log('adduser hit');
         console.log(req.user);
+        res.end();
     });
 });
 
@@ -101,11 +144,14 @@ router.get('/setuser',stormpath.loginRequired, function(req, res, next) {
 });
 
 router.get('/adduser', stormpath.loginRequired, function(req,res){
-  var username = req.user.username;
-  var firstName = req.user.firstName;
-  var lastName = req.user.lastName;
-  var email = req.user.email;
-  helpers.addUser(username, firstName, lastName, email);
+
+  helpers.addUser(req.user);
+  res.end();
+});
+
+router.get('/edituser', stormpath.loginRequired, function(req,res){
+
+  helpers.editUser(req.user);
   res.end();
 });
 
@@ -133,10 +179,10 @@ router.get('/userfrontend',stormpath.loginRequired, function(req, res, next) {
 // testing - route to populate db w test data, use update instead, upsert
 
 router.get('/init', stormpath.loginRequired, function (req, res) {
-    helpers.addTruck('email1', 'firstname1', 'lastname1', 'Truck1', true, 35.0535596, -80.82116959999999);
-    helpers.addTruck('email2', 'firstname2', 'lastname2', 'Truck2', true, 35.1535596, -80.82116959999999);
-    helpers.addTruck('email3', 'firstname3', 'lastname3', 'Truck3', true, 35.0535596, -80.92316959999999);
-    helpers.addTruck('email4', 'firstname4', 'lastname4', 'Truck4', true, 35.2535596, -80.8246959999999);
+    helpers.addTruck('email1', 'firstname1', 'lastname1', 'OooWee BBQ', true, 35.0535596, -80.82116959999999, "908-345-6883", "http://www.eatoooweebbq.com", "BBQ", "Here from 1-6pm");
+    helpers.addTruck('email2', 'firstname2', 'lastname2', 'Tin Kitchen', true, 35.1535596, -80.82116959999999, "", "http://www.tinkitchenfoodtruck.com", "Fusion", "Here from 4-8pm");
+    helpers.addTruck('email3', 'firstname3', 'lastname3', 'Papi Queso', true, 35.0535596, -80.92316959999999, "", "http://www.papiquesotruck.com", "Sandwiches", "Here from 3-7:30pm");
+    helpers.addTruck('email4', 'firstname4', 'lastname4', 'A Bao Time', true, 35.2535596, -80.8246959999999, "704-310-1262", "http://www.facebook.com/a-bao-time", "Asian", "Here from 2:30-6pm");
 
     //return all trucks
     Trucks.find({}).exec(function(err, doc) {
@@ -168,7 +214,7 @@ router.get('/init', stormpath.loginRequired, function (req, res) {
 
 // TESTING - RETURN ALL TRUCKS IN DB REGARDLESS OF STATUS
 
-router.get("/alltrucks",   function(req, res) {
+router.get("/alltrucks",  function(req, res) {
 
   // This GET request will search for all available trucks.
   Trucks.find({}).exec(function(err, doc) {
@@ -191,6 +237,8 @@ router.get("/truckInfo/:truckName", function(req, res){
     }
   });
 });
+
+
 // TESTING, DROP ALL TRUCKS DOCUMENTS
 
 router.get("/deletetrucks", function(req, res) {
@@ -202,8 +250,8 @@ router.get("/deletetrucks", function(req, res) {
 
 router.post('/addtruck', stormpath.loginRequired, function (req, res) {
     var user = req.user;
-    helpers.addTruck(user.email, user.firstName, user.lastName, 'Truck1', user.foodType);
-    // email, firstName, lastName, truckName, foodType
+    helpers.addTruck(user.email, user.firstName, user.lastName, 'Truck1');
+    // email, firstName, lastName, truckName
 });
 
 router.post('/postadmin', stormpath.loginRequired, function (req, res) {
@@ -221,6 +269,8 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
     var truckName = req.body.truckName;
     var lat = req.body.lat;
     var long = req.body.long;
+    var message = req.body.message;
+    var website = req.body.website;
 
     //status handler
     var status = req.body.status;
@@ -259,7 +309,16 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
             $set: {
             status: true,
             lat: lat,
-            long: long
+            long: long,
+            message: message,
+            website: website,
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            phone: phone,
+            website: website,
+            foodType: foodType,
+            message: message
             }
         }, { upsert: true }).exec(function(err) {
 
@@ -276,35 +335,46 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
 
 // New seeing all favorited trucks from one given user
 router.get("/favorites", stormpath.loginRequired, function(req, res) {
-  Users.findOne({username: req.user.username}).exec(function(error, doc){
-    if (error){
-      res.send(error);
-    } else {
-        res.send(doc.favoriteTrucks);
+
+  Users.findOne({username:req.user.username}, 'favoriteTrucks', function (err, doc) {
+    if (err) {
+        return handleError(err)
     }
-  });  
+    else {
+        var obj = {
+            favoriteTrucks: doc.favoriteTrucks
+
+        }
+        res.send(obj);
+    }
+  });
 });
 
 // Add favorite truck via POST route
-router.post("/addFavorites/:truckName", stormpath.loginRequired, function(req, res) {
-  
-  var truckName = req.params.truckName;
 
+router.get("/addfavorites/:truckName",stormpath.loginRequired, function(req, res) {
+    
+  // Find our user and push the new truck name into the User's favorites array
+  var truckName = req.params.truckName;
+  
   // Find our user and push the new truck name into the User's favorites array
   Users.update({username: req.user.username}, { $addToSet: { favoriteTrucks: truckName } }, function(err, newdoc) {
     // Send any errors to the browser
     if (err) {
-      res.send(err);
+        console.log(err);
+        res.send(err);
     }
     // Or send the newdoc to the browser
     else {
-      res.send(newdoc);
+        res.send(newdoc);
     }
   });
 });
 
 // Remove favorite truck via POST route
-router.post("/removeFavorites/:truckName", stormpath.loginRequired, function(req, res) {
+
+router.get("/delfavorites/:truckName", stormpath.loginRequired, function(req, res) {
+
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
   // Find our user and pull the a truck name out of the User's favorites array

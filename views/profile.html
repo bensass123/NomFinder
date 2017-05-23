@@ -1,0 +1,79 @@
+<!-- HTML Code for Profile Creation/Edit -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>My Settings</title>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="assets/css/style.css" rel="stylesheet">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+<body class="container">
+<!-- Navigation Bar -->
+<nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='nav-heart glyphicon glyphicon-cutlery'></span><span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/user">Profile Settings</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                  </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+<div class="container">
+    <div class="col-md-12">
+     <div class="jumbotron" id="selfprofileBox">
+     <!-- This set's the Jumbotrons header. -->
+        <div class="page-header">
+          <h1 class="profileheader">My Profile <small class="username">Username</small></h1>
+        </div>
+      
+    <!-- Status, Interest, Location. -->
+      <!-- <img src="assets/images/profile-pictures.png" class="profileimg"></img> -->
+          <h2>Status:</h2>
+          <p>{{this.status}}</p>
+
+          <h2>Interests:</h2>
+          <p>{{this.interests}}</p>
+
+          <h2>Location:</h2>
+
+          <div class="row">
+            <div class="col-md-12">
+                <div class='container-fluid'>
+                  <div class='row'>
+                        <div class="panel panel-warning mapPanel">
+                            <div class="panel-body">
+                                <!--the map div-->
+                                <div id='map'></div>
+                            </div>
+                        </div>                
+                  </div>  
+                </div>
+            </div>
+        </div>
+     </div>
+ 
+
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>      
+        <!-- Bootstrap JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="assets/js/modal.js"></script>
+</body>
+</html>
