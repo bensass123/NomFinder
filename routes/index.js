@@ -34,10 +34,27 @@ router.get("/view", stormpath.loginRequired, function (req, res){
     
         switch (group) {
             case 'user':
-                res.render("view", {user: data});
+              Users.findOne({username: req.user.username}, function(error, doc) {
+                // Send any errors to the browser
+                if (error) {
+                  res.send(error);
+                }
+                // Or send the doc to the browser
+                else {
+                  console.log(doc);
+                  res.render("home", {user: doc});
+                }
+              });
                 break;
             case 'admin':
-                res.render("admin", {user: data});
+
+              Trucks.findOne({truckName: req.user.username}).exec(function(err, doc){
+                if (err){
+                  console.log(err);
+                } else {
+                  res.render("admin", {user: doc});
+                }
+              });
                 break;
             // case 'super':
                 // res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
@@ -55,10 +72,25 @@ router.get("/profile", stormpath.loginRequired, function (req, res){
     
         switch (group) {
             case 'user':
-                res.render("user", {user: data});
+              Users.findOne({username: req.user.username}, function(error, doc) {
+                // Send any errors to the browser
+                if (error) {
+                  res.send(error);
+                }
+                // Or send the doc to the browser
+                else {
+                  res.render("user", {user: doc});
+                }
+              });
                 break;
             case 'admin':
-                res.render("truck", {user: data});
+              Trucks.findOne({truckName: req.user.username}).exec(function(err, doc){
+                if (err){
+                  console.log(err);
+                } else {
+                  res.render("truck", {user: doc});
+                }
+              });
                 break;
         }
     });

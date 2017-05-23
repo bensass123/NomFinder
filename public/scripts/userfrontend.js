@@ -223,15 +223,15 @@
         })
 
         //set nav heart to include favorites
-        var faveList = [];
+        // var faveList = [];
 
-        $.get("/favorites", function(data, status){ 
-            var trucks = data.favoriteTrucks;
-            for (i = 0; i < trucks.length; i++) {
-                faveList.push("<li class='faves' key='"+trucks[i]+"''>"+ trucks[i] + "</li>");
-            }
-            $("#navFavs").append(faveList);
-            $("#favList").append(faveList);
-        });  
+        // $.get("/favorites", function(data, status){ 
+        //     var trucks = data.favoriteTrucks;
+        //     for (i = 0; i < trucks.length; i++) {
+        //         faveList.push("<li class='faves' key='"+trucks[i]+"''>"+ trucks[i] + "</li>");
+        //     }
+        //     $("#navFavs").append(faveList);
+        //     $("#favList").append(faveList);
+        // });  
 
     });
