@@ -22,62 +22,60 @@
     </video>
 
     <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='nav-heart glyphicon glyphicon-cutlery'></span><span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="../profile">Profile Settings</a></li>
-                    <li id='logout'><a href="">Logout</a></li>
-                  </ul>
-                </li>
-            </ul>
+
+        <div id="sideNav" class="sidenav">
+                <!-- Brand and toggle get grouped for better mobile display -->
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>       
+            <a href="/">Home</a>
+            <a href="../profile">Profile Settings</a>
+            <a id='logout' href="">Logout</a>
         </div>
+
+        <span onclick="openNav()" class='nav-heart glyphicon glyphicon-cutlery'></span>
     </nav>
-<div class="container-fluid">
-  <div class="col-md-8">
-    <div class="jumbotron">
-    <!-- This set's the Jumbotrons header. -->
-       <div class="page-header"><h1>{{user.truckName}}</h1></div>
-     
-       <!-- Status and Other Information. -->
-         <h2>Available:</h2>
-         <p>{{user.status}}</p>
-         <h2>Food Type:</h2>
-         <p>{{user.foodType}}</p>
-         <h2>Website:</h2>
-         <a href='{{user.website}}' target='_blank'><p>{{user.website}}</p></a>
-         <h2>Phone:</h2>
-         <a href="tel:{{user.phone}}"><span class="glyphicon glyphicon-phone glyphicon-align-left" aria-hidden="true"></span></a>
-    </div>
-  </div>
 
-  <div class='col-md-4'>
-    <div class="panel panel-warning adminPanel">
-        <div class="panel-heading text-center">
-            Update Your Information:
+    <div id="main">
+      <div class="container-fluid">
+        <div class="col-md-8">
+          <div class="jumbotron">
+          <!-- This set's the Jumbotrons header. -->
+             <div class="page-header"><h1>{{user.truckName}}</h1></div>
+           
+             <!-- Status and Other Information. -->
+               <h2>Available:</h2>
+               <p>{{user.status}}</p>
+               <h2>Food Type:</h2>
+               <p>{{user.foodType}}</p>
+               <h2>Website:</h2>
+               <a href='{{user.website}}' target='_blank'><p>{{user.website}}</p></a>
+               <h2>Phone:</h2>
+               <a href="tel:{{user.phone}}"><span class="glyphicon glyphicon-phone glyphicon-align-left" aria-hidden="true"></span></a>
+          </div>
         </div>
-    <div class="panel-body text-center">        
-        <h1>Admin</h1>
 
-        <form action="/postloc" method='post'>
-            Truck Name:<br>
-            <input type="text" name="truckName"><br><br>
-            Message:<br>
-            <input type="text" name="message"><br><br>
-            Food Type:<br>
-            <input type="text" name="foodType"><br><br>
-            Website:<br>
-            <input type="text" name="website"><br><br>
-            <input type="checkbox" id="statusCheck" name="status" checked>
-            <label for="statusCheck">Active: </label>
-            <input type="submit" value="Submit"> 
-        </form>
+        <div class='col-md-4'>
+          <div class="panel panel-warning adminPanel">
+              <div class="panel-heading text-center">
+                  Update Your Information:
+              </div>
+          <div class="panel-body text-center">        
+              <h1>Admin</h1>
+
+              <form action="/editTruck" method='post'>
+                  Truck Name:<br>
+                  <input type="text" name="truckName"><br><br>
+                  Message:<br>
+                  <input type="text" name="message"><br><br>
+                  Food Type:<br>
+                  <input type="text" name="foodType"><br><br>
+                  Website:<br>
+                  <input type="text" name="website"><br><br>
+                  <input type="submit" value="Submit"> 
+              </form>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
        <!-- jQuery -->
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>  
 

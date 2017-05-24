@@ -25,74 +25,74 @@
     </video>
 
     <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='nav-heart glyphicon glyphicon-cutlery'></span><span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="../profile">Profile Settings</a></li>
-                    <li id='logout'><a href="">Logout</a></li>
-                  </ul>
-                </li>
-            </ul>
+
+        <div id="sideNav" class="sidenav">
+                <!-- Brand and toggle get grouped for better mobile display -->
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>       
+            <a href="/">Home</a>
+            <a href="../profile">Profile Settings</a>
+            <a id='logout' href="">Logout</a>
         </div>
+
+        <span onclick="openNav()" class='nav-heart glyphicon glyphicon-cutlery'></span>
     </nav>
 
-    <!--favorties only switch-->
-    <div class='container-fluid'>
-        <div class='row'>
-          <div class='col-md-6'>
-            <div id='slider' class='sliderDivOff'>
-                <span class='glyphicon glyphicon-heart sliderHeart off animated'></span>
-            </div>
-          </div>
-        </div>
-    </div>
+    <div id="main">
 
-    <!--map container-->
-
-    <div class='container-fluid'>
-      <div class='row'>
-        <div class='col-md-8'>
-            <div class="panel panel-default mapPanel">
-                <div class="panel-body">
-                    <!--the map div-->
-                    <div id='map'></div>
+        <!--favorties only switch-->
+        <div class='container-fluid'>
+            <div class='row'>
+              <div class='col-md-6'>
+                <div id='slider' class='sliderDivOff'>
+                    <span class='glyphicon glyphicon-heart sliderHeart off animated'></span>
                 </div>
+              </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="panel panel-defaul">
-                <div class="panel-heading">
-                    <h3 class="panel-title text-center">Favorites</h3>
-                </div>
-                <div class="panel-body text-center">
-                    <ul id="favList">
-                        {{#each user.favoriteTrucks}}
-                            <!-- {{#unless this.favoriteTrucks}} -->
-                                <li>
-                                    <a href='profile/{{this}}'><h4>{{this}}</h4></a>
-                                </li>
-                            <!-- {{/unless}} -->
-                        {{/each}}
-                    </ul>
+
+        <!--map container-->
+
+        <div class='container-fluid'>
+          <div class='row'>
+            <div class='col-md-8'>
+                <div class="panel panel-default mapPanel">
+                    <div class="panel-body">
+                        <!--the map div-->
+                        <div id='map'></div>
+                    </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="panel panel-defaul">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Favorites</h3>
+                    </div>
+                    <div class="panel-body text-center">
+                        <ul id="favList">
+                            {{#each user.favoriteTrucks}}
+                                <!-- {{#unless this.favoriteTrucks}} -->
+                                    <li>
+                                        <a href='profile/{{this}}'><h4>{{this}}</h4></a>
+                                    </li>
+                                <!-- {{/unless}} -->
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+          </div>  
         </div>
-      </div>  
-    </div>
-    
-    <!--add/remove selected favorites-->
+        
+        <!--add/remove selected favorites-->
 
-    <div class='container-fluid'>
-      <div class='row'>
-        <div class=' col-md-8 favButtons'>
-            <button type="button" id='removeBtn' class="btn btn-primary favButtons"><span class='glyphicon glyphicon-thumbs-down'></span></button>
-            <button type="button" id='addBtn' class="btn btn-primary favButtons"><span class='glyphicon glyphicon-thumbs-up'></span></button>
+        <div class='container-fluid'>
+          <div class='row'>
+            <div class=' col-md-8 favButtons'>
+                <button type="button" id='removeBtn' class="btn btn-primary favButtons"><span class='glyphicon glyphicon-thumbs-down'></span></button>
+                <button type="button" id='addBtn' class="btn btn-primary favButtons"><span class='glyphicon glyphicon-thumbs-up'></span></button>
+            </div>
+          </div>  
         </div>
-      </div>  
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

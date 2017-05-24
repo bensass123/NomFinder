@@ -122,18 +122,15 @@ router.get("/api", function(req, res) {
    });
  });
 
-router.get('/adduser', stormpath.loginRequired, function (req,res){
-    req.user.getCustomData(function(err, data) { 
-        // get user group
-        console.log('adduser hit');
-        var group = data.group;
-        req.user.group = group;
-        helpers.addUser(req.user);
-        console.log('adduser hit');
-        console.log(req.user);
-        res.end();
-    });
-});
+// router.get('/adduser', stormpath.loginRequired, function (req,res){
+//     req.user.getCustomData(function(err, data) { 
+//         // get user group
+//         var group = data.group;
+//         req.user.group = group;
+//         helpers.addUser(req.user);
+//         res.end();
+//     });
+// });
 
 router.get("/allusers", stormpath.loginRequired, function(req, res) {
 
@@ -202,7 +199,7 @@ router.post('/edituser', stormpath.loginRequired, function(req,res){
   console.log("Phone: " + phone);
   console.log("username: " + username);
 
-  Users.findOneAndUpdate({email: req.user.email}, 
+  Users.findOneAndUpdate({email: req.user}, 
     {
       $set: {
       username: username,
@@ -320,6 +317,33 @@ router.post('/addtruck', stormpath.loginRequired, function (req, res) {
     // email, firstName, lastName, truckName
 });
 
+router.post("/editTruck", stormpath.loginRequired, function (req, res) {
+  var user = req.user;
+  var truckName = req.body.truckName;
+  var website = req.body.website;
+  var message = req.body.message;
+  var foodType = req.body.foodType;
+
+  Trucks.findOneAndUpdate({email: user}, 
+  {
+      $set: {
+      truckName: truckName,
+      website: website,
+      message: message,
+      foodType: foodType
+      }
+
+  }, { upsert: true }).exec(function(err, doc) {
+
+      if (err) {
+      console.log(err);
+      }
+      else {
+      res.render("truck", {'user': doc});
+      }
+  });
+});
+
 router.post('/postadmin', stormpath.loginRequired, function (req, res) {
     req.body.truckName;
     req.body.ownerName;
@@ -332,12 +356,10 @@ router.post('/postadmin', stormpath.loginRequired, function (req, res) {
 router.post('/postloc', stormpath.loginRequired, function (req, res) {
     console.log('post location route hit');
     console.log(req.body);
-    var user = req.user.email;
     var truckName = req.body.truckName;
     var lat = req.body.lat;
     var long = req.body.long;
     var message = req.body.message;
-    var website = req.body.website;
 
     //status handler
     var status = req.body.status;
@@ -352,7 +374,7 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
     // toggle status in  model
     if(!status) {
         Trucks.findOneAndUpdate({
-            email: user
+            truckName: truckName
         }, {
             $set: {
             status: false
@@ -371,20 +393,12 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
     // if signing on/reporting location
     else {
         Trucks.findOneAndUpdate({
-            email: user
+            truckName: truckName
         }, {
             $set: {
             status: true,
             lat: lat,
             long: long,
-            message: message,
-            website: website,
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
-            phone: phone,
-            website: website,
-            foodType: foodType,
             message: message
             }
         }, { upsert: true }).exec(function(err, doc) {
