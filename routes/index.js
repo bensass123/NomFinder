@@ -216,7 +216,7 @@ router.post('/edituser', stormpath.loginRequired, function(req,res){
       console.log(err);
       }
       else {
-      res.send(doc);
+      res.render("user", {"user": doc});
       }
   });
 });
