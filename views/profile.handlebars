@@ -1,0 +1,69 @@
+<!-- HTML Code for Food Truck Profile -->
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+       <meta charset="utf-8">
+       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <title>My Profile</title>
+       <!-- Bootstrap CSS -->
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+       <link href="/stylesheets/style.css" rel="stylesheet">
+       <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+       <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+       <!--[if lt IE 9]>
+           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+       <![endif]-->
+   </head>
+<body>
+    <video id="my-video" class="video" loop="loop" muted="" width="300" height="150">
+        <source src="../vid/walking.mp4" type="video/mp4" />
+    </video>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='nav-heart glyphicon glyphicon-cutlery'></span><span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="../profile">Profile Settings</a></li>
+                    <li id='logout'><a href="">Logout</a></li>
+                  </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+<div class="container-fluid">
+    <div class='row'>
+        <div class="col-xs-12 text-center">
+            <div class="jumbotron">
+
+                <img id="truckPic" src="{{user.pic}}" alt="foodtruck">
+                
+                <div class="page-header"><h1>{{user.truckName}}</h1></div>
+           <!-- Status and Other Information. -->
+                 <h2>Available:</h2>
+                 <p>{{user.status}}</p>
+                 <h2>Food Type:</h2>
+                 <p>{{user.foodType}}</p>
+                 <h2>Website:</h2>
+                 <a href='{{user.website}}' target='_blank'><p>Click Here</p></a>
+                 <h2>Phone:</h2>
+                 <a href="tel:{{user.phone}}"><span class="glyphicon glyphicon-phone glyphicon-align-left" aria-hidden="true"></span></a>
+            </div>
+        <!-- This set's the Jumbotrons header. -->      
+        </div>
+    </div>
+</div>
+       <!-- jQuery -->
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+       <!-- Bootstrap JavaScript -->
+       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src='../scripts/adminfrontend.js'></script>
+
+</body>
+</html>

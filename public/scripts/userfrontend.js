@@ -1,6 +1,16 @@
+
+   $(".dropdown-toggle").dropdown();
+
+   // logout button
+    $('#logout').click(()=>{
+        $.post('/logout');
+        setTimeout(()=>{
+            location.reload();
+        }, 400);
+    });
+
     var clickedTruck;
     var markers = [];
-
 
 
     // TESTING ONLY, POPULATES DB WITH TEST DATA
@@ -58,15 +68,16 @@
         // To add the marker to the map, call setMap();
         marker.setMap(map);
     }
+    
+    var placeMarker = (lat, long, truckName, website, message, icon) => {
+      // console.log('placemarker run');
+      // console.log(lat, long, truckName, icon);
 
-
-
-    var placeMarker = (lat, long, truckName, icon) => {
-      console.log('placemarker run');
-      console.log(lat, long, truckName, icon);
+      var truckInfo = "<div class='truckInfo'><h3>" + truckName + "</h3><p>" + message + "</p><a href='"+ website + "''target='_blank'><p>" + website + "</p></a></div>" 
       // no info window for user
         let infowindow = new google.maps.InfoWindow({
-          content: truckName
+          content: truckInfo
+
         });
 
         let marker = new google.maps.Marker({
@@ -82,7 +93,8 @@
 
         marker.addListener('click', function() {
           clickedTruck =  marker.title;
-          console.log(clickedTruck);
+          // console.log(clickedTruck);
+
           infowindow.open(map, marker);
         });
 
@@ -95,12 +107,16 @@
     var setActiveTrucks = () => {
       //ajax call to get active trucks, then send all data to placeMarker to create Markers
       $.get("/api", function(data, status){
-        console.log("Data: " + JSON.stringify(data) + " Status: " + JSON.stringify(status));
+
+        // console.log("Data: " + JSON.stringify(data) + " Status: " + JSON.stringify(status));
         activeTrucks = data;
       }).then(() => {
         for (var i = 0; i <activeTrucks.length; i++) {
           var t = activeTrucks[i];
-          placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, truckIcon);
+
+          placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, t.website, t.message, truckIcon);
+
+
         }
       });
     }
@@ -118,15 +134,16 @@
         for (var i = 0; i < arr.length; i++) {
             var f = arr[i];
             for (var j = 0; j < markers.length; j++) {
-                console.log(markers[j].title + '  ' + arr[i]);
-                console.log(markers[j].title === arr[i]);
+
+                // console.log(markers[j].title + '  ' + arr[i]);
+                // console.log(markers[j].title === arr[i]);
+
                 if (markers[j].title === arr[i]) {
                     markers[j].setMap(map);
                 }
             }
         }
     } 
-
 
 
     var faveMarkers = [];
@@ -161,12 +178,10 @@
         var on = false;
 
         $('#addBtn').click(()=> {
-            console.log(clickedTruck);
             $.get('/addfavorites/' + clickedTruck, function(data){
                 console.log('addtruck clicked')
                 console.log(data);
             }).done(function() {
-                console.log( "done" );
                 location.reload();
             })
             .fail(function() {
@@ -175,11 +190,11 @@
         });
 
         $('#removeBtn').click(()=> {
-            console.log(clickedTruck);
+
+            // console.log(clickedTruck);
             $.get('/delfavorites/' + clickedTruck, function(data){
                 console.log(data);
             }).done(function() {
-                console.log( "done" );
                 location.reload();
             })
             .fail(function() {
@@ -210,6 +225,8 @@
                 $('#slider').addClass('sliderDivOff');
                 $('.sliderHeart').addClass('off');
                 $('.sliderHeart').removeClass('on');
+
+
                 // $('.sliderHeart').addClass('flip');
                 $(".sliderHeart").velocity({left: '9px'});
                 // setTimeout(()=>{
@@ -217,25 +234,9 @@
                 // }, 400);
                 // $(".sliderHeart").velocity({fontSize: '8vh'}, "slow");
                 // $(".sliderHeart").velocity({fontSize: '5vh'}, "slow");
+
                 on = false;
                 setActiveTrucks();
             }
         })
-
-        //set nav heart to include favorites
-        
-
-        $.get("/alltrucks", function(data, status){ 
-            for (i = 0; i < data.length; i++) {
-                faveList.push("<li class='faves' key="+data[i].truckName+"y>"+ data[i].truckName + "<li>");
-
-            }
-            $('#navFaves').html(faveList);
-        });
-
-        
-        
-        
-        
-
     });

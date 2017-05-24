@@ -6,24 +6,89 @@ var Trucks = require('../models/Truck.js');
 var Users = require('../models/User.js');
 var helpers = require('./helpers.js');
 
-/* GET home page. */
-router.get('/',stormpath.loginRequired, function(req, res, next) {
-    req.user.getCustomData(function(err, data) { 
+
+// View Page
+router.get("/", stormpath.loginRequired, function (req, res){
+  req.user.getCustomData(function(err, data) { 
         // get user group
         var group = data.group;
     
         switch (group) {
             case 'user':
-                res.sendFile(path.join(__dirname, '/../views/index3.html'));
+              Users.findOne({username: req.user.username}, function(error, doc) {
+                // Send any errors to the browser
+                if (error) {
+                  res.send(error);
+                }
+                // Or send the doc to the browser
+                else {
+                  console.log(doc);
+                  res.render("home", {'user': doc});
+                }
+              });
+                break;
+
+            case 'admin':
+              Trucks.findOne({email: req.user.email}).exec(function(err, doc){
+                if (err){
+                  console.log(err);
+                } else {
+                  res.render("admin", {'user': doc});
+                }
+              });
+                break;
+            // case 'super':
+                // res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
+                // break;
+        }
+    });
+});
+
+
+// User or Truck Profile
+router.get("/profile", stormpath.loginRequired, function (req, res){
+  req.user.getCustomData(function(err, data) { 
+        // get user group
+        var group = data.group;
+    
+        switch (group) {
+            case 'user':
+              Users.findOne({username: req.user.username}, function(error, doc) {
+                // Send any errors to the browser
+                if (error) {
+                  res.send(error);
+                }
+                // Or send the doc to the browser
+                else {
+                  res.render("user", {'user': doc});
+                }
+              });
                 break;
             case 'admin':
-                res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
-                break;
-            case 'super':
-                res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
+              Trucks.findOne({email: req.user.username}).exec(function(err, doc){
+                if (err){
+                  console.log(err);
+                } else {
+                  res.render("truck", {'user': doc});
+                }
+              });
                 break;
         }
     });
+});
+
+
+router.get("/profile/:truckName", stormpath.loginRequired, function (req, res){
+  var truck = req.params.truckName;
+  truck = truck.replace(/%20/g, "")
+
+  Trucks.findOne({truckName: truck}).exec(function(err, doc){
+    if (err){
+      console.log(err);
+    } else {
+      res.render("profile", {'user': doc});
+    }
+  });
 });
 
 router.get("/api", function(req, res) {
@@ -106,6 +171,37 @@ router.get('/adduser', stormpath.loginRequired, function(req,res){
   res.end();
 });
 
+router.post('/edituser', stormpath.loginRequired, function(req,res){
+
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName; 
+  var phone = req.body.phone;
+  var username = req.body.username;
+
+  console.log("First name: " + firstName);
+  console.log("Last name: " + lastName);
+  console.log("Phone: " + phone);
+  console.log("username: " + username);
+
+  Users.findOneAndUpdate({email: req.user.email}, 
+    {
+      $set: {
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone
+      
+    }}, { upsert: true }).exec(function(err, doc) {
+
+      if (err) {
+      console.log(err);
+      }
+      else {
+      res.render("user", {"user": doc});
+      }
+  });
+});
+
 // Route to see what user looks like without populating
 router.get("/user", stormpath.loginRequired, function(req, res) {
   // Find all users in the user collection with our User model
@@ -130,10 +226,10 @@ router.get('/userfrontend',stormpath.loginRequired, function(req, res, next) {
 // testing - route to populate db w test data, use update instead, upsert
 
 router.get('/init', stormpath.loginRequired, function (req, res) {
-    helpers.addTruck('email1', 'firstname1', 'lastname1', 'Truck1', true, 35.0535596, -80.82116959999999);
-    helpers.addTruck('email2', 'firstname2', 'lastname2', 'Truck2', true, 35.1535596, -80.82116959999999);
-    helpers.addTruck('email3', 'firstname3', 'lastname3', 'Truck3', true, 35.0535596, -80.92316959999999);
-    helpers.addTruck('email4', 'firstname4', 'lastname4', 'Truck4', true, 35.2535596, -80.8246959999999);
+    helpers.addTruck('email1', 'firstname1', 'lastname1', 'OooWee BBQ', true, 35.0535596, -80.82116959999999, "908-345-6883", "http://www.eatoooweebbq.com", "BBQ", "Here from 1-6pm", "https://img.clipartfest.com/2ea0638057ea2b18bf418bb336605f65_food-truck-court-is-cancelled-food-truck-clipart-transparent_488-349.png");
+    helpers.addTruck('email2', 'firstname2', 'lastname2', 'Tin Kitchen', true, 35.1535596, -80.82116959999999, "", "http://www.tinkitchenfoodtruck.com", "Fusion", "Here from 4-8pm", "https://img.clipartfest.com/2ea0638057ea2b18bf418bb336605f65_food-truck-court-is-cancelled-food-truck-clipart-transparent_488-349.png");
+    helpers.addTruck('email3', 'firstname3', 'lastname3', 'Papi Queso', true, 35.0535596, -80.92316959999999, "", "http://www.papiquesotruck.com", "Sandwiches", "Here from 3-7:30pm", "https://img.clipartfest.com/2ea0638057ea2b18bf418bb336605f65_food-truck-court-is-cancelled-food-truck-clipart-transparent_488-349.png");
+    helpers.addTruck('email4', 'firstname4', 'lastname4', 'A Bao Time', true, 35.2535596, -80.8246959999999, "704-310-1262", "http://www.facebook.com/a-bao-time", "Asian", "Here from 2:30-6pm", "https://img.clipartfest.com/2ea0638057ea2b18bf418bb336605f65_food-truck-court-is-cancelled-food-truck-clipart-transparent_488-349.png");
 
     //return all trucks
     Trucks.find({}).exec(function(err, doc) {
@@ -201,7 +297,7 @@ router.get("/deletetrucks", function(req, res) {
 
 router.post('/addtruck', stormpath.loginRequired, function (req, res) {
     var user = req.user;
-    helpers.addTruck(user.email, user.firstName, user.lastName, 'Truck1');
+    helpers.addTruck(user.email, user.firstName, user.lastName);
     // email, firstName, lastName, truckName
 });
 
@@ -217,9 +313,12 @@ router.post('/postadmin', stormpath.loginRequired, function (req, res) {
 router.post('/postloc', stormpath.loginRequired, function (req, res) {
     console.log('post location route hit');
     console.log(req.body);
+    var user = req.user.email;
     var truckName = req.body.truckName;
     var lat = req.body.lat;
     var long = req.body.long;
+    var message = req.body.message;
+    var website = req.body.website;
 
     //status handler
     var status = req.body.status;
@@ -234,18 +333,18 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
     // toggle status in  model
     if(!status) {
         Trucks.findOneAndUpdate({
-            truckName: truckName
+            email: user
         }, {
             $set: {
             status: false
             }
-        }, { upsert: true }).exec(function(err) {
+        }, { upsert: true }).exec(function(err, doc) {
 
             if (err) {
             console.log(err);
             }
             else {
-            res.send(truckName + " Status: Off-duty");
+            res.render("admin", {'user': doc});
             }
         });
     } 
@@ -253,20 +352,29 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
     // if signing on/reporting location
     else {
         Trucks.findOneAndUpdate({
-            truckName: truckName
+            email: user
         }, {
             $set: {
             status: true,
             lat: lat,
-            long: long
+            long: long,
+            message: message,
+            website: website,
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            phone: phone,
+            website: website,
+            foodType: foodType,
+            message: message
             }
-        }, { upsert: true }).exec(function(err) {
+        }, { upsert: true }).exec(function(err, doc) {
 
             if (err) {
             console.log(err);
             }
             else {
-            res.send(truckName + " Status: On-duty");
+            res.render("admin", {'user': doc});
             }
         });
     }
@@ -275,8 +383,8 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
 
 // New seeing all favorited trucks from one given user
 router.get("/favorites", stormpath.loginRequired, function(req, res) {
-
-  Users.findOne({username:req.user.username},  'favoriteTrucks', function (err, doc) {
+  
+  Users.findOne({username:req.user.username}, 'favoriteTrucks', function (err, doc) {
     if (err) {
         return handleError(err)
     }
@@ -290,18 +398,14 @@ router.get("/favorites", stormpath.loginRequired, function(req, res) {
   });
 });
 
-// Add favorite truck via POST route
+// Add favorite truck via GET route
+
 
 router.get("/addfavorites/:truckName",stormpath.loginRequired, function(req, res) {
-
-
-    // need to add functionality to instantiate the array if it doesnt exist - todo
     
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
-  console.log('truck name: ' + truckName);
-  console.log('user:       ' + req.user.username);
-
+  
   // Find our user and push the new truck name into the User's favorites array
   Users.update({username: req.user.username}, { $addToSet: { favoriteTrucks: truckName } }, function(err, newdoc) {
     // Send any errors to the browser
@@ -311,7 +415,6 @@ router.get("/addfavorites/:truckName",stormpath.loginRequired, function(req, res
     }
     // Or send the newdoc to the browser
     else {
-        console.log(newdoc)
         res.send(newdoc);
     }
   });

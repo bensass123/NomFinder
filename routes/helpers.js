@@ -3,7 +3,8 @@ var Users = require('../models/User.js');
 
 module.exports = {
 
-    addTruck: (email, firstName, lastName, truckName, status = false, lat = 1, long = 2, phone, website, foodType) => {
+
+    addTruck: (email, firstName, lastName, truckName, status = false, lat = 1, long = 2, phone, website, foodType, message, pic) => {
         var obj = {
                 email: email,
                 firstName: firstName,
@@ -14,7 +15,9 @@ module.exports = {
                 long: long,
                 phone: phone,
                 website: website,
-                foodType: foodType
+                foodType: foodType,
+                message: message,
+                pic: pic
             };
         return Trucks.update({truckName: truckName}, obj, {upsert: true}, (err, doc) => {
             if (err) {console.log(err);}
@@ -39,8 +42,8 @@ module.exports = {
             user.phone = 55555555555;
         }
         var obj = {
-            firstName: user.firstName,
-            lastName: user.lastName,
+            firstName: user.givenName,
+            lastName: user.surname,
             email: user.email,
             phone: user.phone,
             username: user.username,

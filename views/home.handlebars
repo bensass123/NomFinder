@@ -21,32 +21,28 @@
 
 <body>
     <video id="my-video" class="video" loop="loop" muted="" width="300" height="150">
-        <source src="../public/vid/walking.mp4" type="video/mp4" />
+        <source src="../vid/walking.mp4" type="video/mp4" />
     </video>
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
-
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='nav-heart glyphicon glyphicon-cutlery'></span><span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="/view">Home</a></li>
-                    <li><a href="/profile">Profile Settings</a></li>
-                    <li id='logout'><a href="/logout">Logout</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="../profile">Profile Settings</a></li>
+                    <li id='logout'><a href="">Logout</a></li>
                   </ul>
-
                 </li>
             </ul>
         </div>
     </nav>
 
-
     <!--favorties only switch-->
     <div class='container-fluid'>
         <div class='row'>
-
           <div class='col-md-6'>
             <div id='slider' class='sliderDivOff'>
                 <span class='glyphicon glyphicon-heart sliderHeart off animated'></span>
@@ -72,7 +68,17 @@
                 <div class="panel-heading">
                     <h3 class="panel-title text-center">Favorites</h3>
                 </div>
-                <div class="panel-body text-center" id="favList"></div>
+                <div class="panel-body text-center">
+                    <ul id="favList">
+                        {{#each user.favoriteTrucks}}
+                            <!-- {{#unless this.favoriteTrucks}} -->
+                                <li>
+                                    <a href='profile/{{this}}'><h4>{{this}}</h4></a>
+                                </li>
+                            <!-- {{/unless}} -->
+                        {{/each}}
+                    </ul>
+                </div>
             </div>
         </div>
       </div>  
@@ -83,26 +89,24 @@
     <div class='container-fluid'>
       <div class='row'>
         <div class=' col-md-8 favButtons'>
-
             <button type="button" id='removeBtn' class="btn btn-primary favButtons"><span class='glyphicon glyphicon-thumbs-down'></span></button>
             <button type="button" id='addBtn' class="btn btn-primary favButtons"><span class='glyphicon glyphicon-thumbs-up'></span></button>
-
         </div>
       </div>  
     </div>
-
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    
-    <!--javascript for the suer frontend page-->
-    <script src='./scripts/userfrontend.js'></script>
 
+    
     <!--google maps api call-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG8SjBT1q6dpCND-aKpAw-5jJBa9PpvZw&callback=initMap"
     async defer></script>
+
+    <!--javascript for the user frontend page-->
+    <script src='../scripts/userfrontend.js'></script>
 </body>
 
 </html>

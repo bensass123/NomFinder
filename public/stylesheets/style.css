@@ -18,14 +18,22 @@ a {
   height: 12vh;
   background-size: contain;
   background-repeat: no-repeat;
+  opacity: .8;
+  border-style: none;
+
 }
 
 .nav-heart {
   color:black;
-  font-size: 8.0vh;
+  font-size: 5.0vh;
+  margin-top: 22px;
+  margin-right: 32px;
    -webkit-text-fill-color: #f4a11b; /* Will override color (regardless of order) */
    -webkit-text-stroke-width: 1px;
    -webkit-text-stroke-color: black;
+   position: absolute;
+   right: 0;
+
 }
 
 #map {
@@ -57,16 +65,29 @@ a {
 #addBtn{
   background: #be7467;
   color: white;
-  width: 45%;
+  width: 40%;
   margin-left: 9%;
 }
 
 #removeBtn {
   color: white;
   background: #be7467;
-  width: 45%;
+  margin-left: 15px;
+  width: 40%;
 }
 
+#truckPic{
+  max-width: 200px;
+  display: block;
+  margin: auto;
+}
+
+/*Favorites Panel*/
+
+#favList > li{
+  list-style: none;
+  margin-left: -43px;
+}
 
 
 
@@ -75,8 +96,12 @@ a {
 #slider{
   height: 8vh;
   border-radius: 20px;
-  margin-bottom: 8px;
   width: 226px;
+  display: block;
+  margin: auto;
+  margin-bottom: 8px;
+
+
 }
 
 .sliderDivOn {
@@ -104,6 +129,16 @@ a {
   position: relative;
   /*left: 32px;
   top: 9px;*/
+}
+
+
+
+/* User Form Group */
+
+.form-group{
+  max-width: 50%;
+  display: block;
+  margin: auto;
 }
 
 /*

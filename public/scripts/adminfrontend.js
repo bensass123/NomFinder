@@ -1,3 +1,15 @@
+
+    $(".dropdown-toggle").dropdown();
+
+   // logout button
+    $('#logout').click(()=>{
+        $.post('/logout');
+        setTimeout(()=>{
+            location.reload();
+        }, 400);
+    });
+
+
    // TESTING ONLY, POPULATES DB WITH TEST DATA
     var testPopulate = () => {
       $.get('/init', (err) =>{
@@ -54,12 +66,16 @@
         marker.setMap(map);
     }
 
-    var placeMarker = (lat, long, truckName, icon) => {
-      console.log('placemarker run');
-      console.log(lat, long, truckName, icon);
+    var placeMarker = (lat, long, truckName, website, message, icon) => {
+      // console.log('placemarker run');
+      // console.log(lat, long, truckName, icon);
+
+      var truckInfo = "<div class='truckInfo'><h3>" + truckName + "</h3><br><p>" + message + "</p><br><a href='"+ website + "''target='_blank'><p>" + website + "</p></a></div>" 
+
       // no info window for user
         let infowindow = new google.maps.InfoWindow({
-          content: truckName
+          content: truckInfo
+
         });
 
         let marker = new google.maps.Marker({
@@ -84,12 +100,13 @@
     var setActiveTrucks = () => {
       //ajax call to get active trucks, then send all data to placeMarker to create Markers
       $.get("/api", function(data, status){
-        console.log("Data: " + JSON.stringify(data) + "\nStatus: " + JSON.stringify(status));
+        // console.log("Data: " + JSON.stringify(data) + "\nStatus: " + JSON.stringify(status));
         activeTrucks = data;
       }).then(() => {
         for (var i = 0; i <activeTrucks.length; i++) {
           var t = activeTrucks[i];
-          placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, truckIcon);
+          placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, t.website, t.message, truckIcon);
+
         }
       });
     }
@@ -107,7 +124,7 @@
     var addTruck = () => {
       $.post('/addtruck', (err) =>{
         if(err) {console.log(err)}
-        console.log('truck added');
+
       });
     }
 
@@ -149,16 +166,5 @@
             }
         })
 
-         //set nav heart to include favorites
-        var faveList = [];
-
-        $.get("/alltrucks", function(data, status){ 
-            console.log(data);
-            for (i = 0; i < data.length; i++) {
-                faveList.push("<li class='faves' key="+data[i].truckName+"y>"+ data[i].truckName + "<li>");
-            }
-            $('#navFaves').html(faveList);
-            console.log(faveList);
-        });
     });
   
