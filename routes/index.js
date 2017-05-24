@@ -12,6 +12,23 @@ router.get("/", stormpath.loginRequired, function (req, res){
   req.user.getCustomData(function(err, data) { 
         // get user group
         var group = data.group;
+        // console.log('---------------------GROUP-------------------------');
+        // console.log(group);
+        // console.log('------------------------------------------------------------');
+
+        if (group === null) {
+          group = 'user';
+          data.group = group;
+          data.save();
+          // updating group in mongo db to match customData
+          Users.findOne({username: req.user.username}, {group: 'user'}, function(error, doc) { 
+            if (err) {console.log(err)}
+            else {
+              // console.log('--------------GROUP UPDATED IN MONGO DB---------------------');
+              console.log(req.user.username + ' group = ' + group);
+            }
+          })
+        }
     
         switch (group) {
             case 'user':
@@ -22,7 +39,6 @@ router.get("/", stormpath.loginRequired, function (req, res){
                 }
                 // Or send the doc to the browser
                 else {
-                  console.log(doc);
                   res.render("home", {'user': doc});
                 }
               });
@@ -37,9 +53,6 @@ router.get("/", stormpath.loginRequired, function (req, res){
                 }
               });
                 break;
-            // case 'super':
-                // res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
-                // break;
         }
     });
 });
@@ -103,15 +116,27 @@ router.get("/api", function(req, res) {
    });
  });
 
-// router.get('/adduser', stormpath.loginRequired, function (req,res){
-//     req.user.getCustomData(function(err, data) { 
-//         // get user group
-//         var group = data.group;
-//         req.user.group = group;
-//         helpers.addUser(req.user);
-//         res.end();
-//     });
-// });
+router.get('/adduser', stormpath.loginRequired, function (req,res){
+
+    req.user.getCustomData(function(err, data) { 
+      if (!data.group){
+        var user = req.user;
+        data.group = 'user';
+        data.save();
+        helpers.addUser(user, 'user');
+        res.end();
+      }
+
+      else {
+        var user = req.user;
+        var group = data.group;
+        // console.log('----------------------------ADDUSER group = ' + data.group)
+        helpers.addUser(user, group);
+        res.end();
+      }
+
+    });
+});
 
 router.get("/allusers", stormpath.loginRequired, function(req, res) {
 
@@ -175,10 +200,10 @@ router.post('/edituser', stormpath.loginRequired, function(req,res){
   var phone = req.body.phone;
   var username = req.body.username;
 
-  console.log("First name: " + firstName);
-  console.log("Last name: " + lastName);
-  console.log("Phone: " + phone);
-  console.log("username: " + username);
+  // console.log("First name: " + firstName);
+  // console.log("Last name: " + lastName);
+  // console.log("Phone: " + phone);
+  // console.log("username: " + username);
 
   Users.findOneAndUpdate({email: req.user}, 
     {

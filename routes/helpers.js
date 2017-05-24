@@ -25,19 +25,13 @@ module.exports = {
         })
     },
   
-    addUser: (user) => {
-        console.log('initial user');
-        console.log(user);
-        var faves = [];
-        if(!user.favoriteTrucks) {
-            faves = [];
-        }
-        else{
-            faves = user.favoriteTrucks;
-        }
+    addUser: (user, group) => {
+        // console.log('initial user');
+        // console.log(user);
+        // console.log('---------------adduser-user-object------------');
+        // console.log(user.customData);
+        // console.log('---------------adduser-CUSTOMDATA-object------------');
 
-        console.log('favorite trucks');
-        console.log(faves);
         if (!user.phone) {
             user.phone = 55555555555;
         }
@@ -56,7 +50,5 @@ module.exports = {
             else {console.log(doc);}
         })
     }
-
-
 
 }

@@ -107,7 +107,6 @@ app.use(stormpath.init(app, {
               required: false,
               type: "text"
             }
-          }
         }
       }
     }
