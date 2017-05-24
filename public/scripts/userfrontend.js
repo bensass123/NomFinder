@@ -1,5 +1,4 @@
-
-   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
+/* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
 function openNav() {
     document.getElementById("sideNav").style.width = "250px";
     document.getElementById("main").style.marginRight = "250px";
@@ -25,6 +24,7 @@ function closeNav() {
 
     var clickedTruck;
     var markers = [];
+
 
     // TESTING ONLY, POPULATES DB WITH TEST DATA
     var testPopulate = () => {
@@ -81,9 +81,7 @@ function closeNav() {
         // To add the marker to the map, call setMap();
         marker.setMap(map);
     }
-
-
-
+    
     var placeMarker = (lat, long, truckName, website, message, icon) => {
       // console.log('placemarker run');
       // console.log(lat, long, truckName, icon);
@@ -92,6 +90,7 @@ function closeNav() {
       // no info window for user
         let infowindow = new google.maps.InfoWindow({
           content: truckInfo
+
         });
 
         let marker = new google.maps.Marker({
@@ -108,6 +107,7 @@ function closeNav() {
         marker.addListener('click', function() {
           clickedTruck =  marker.title;
           // console.log(clickedTruck);
+
           infowindow.open(map, marker);
         });
 
@@ -120,12 +120,16 @@ function closeNav() {
     var setActiveTrucks = () => {
       //ajax call to get active trucks, then send all data to placeMarker to create Markers
       $.get("/api", function(data, status){
+
         // console.log("Data: " + JSON.stringify(data) + " Status: " + JSON.stringify(status));
         activeTrucks = data;
       }).then(() => {
         for (var i = 0; i <activeTrucks.length; i++) {
           var t = activeTrucks[i];
+
           placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, t.website, t.message, truckIcon);
+
+
         }
       });
     }
@@ -143,14 +147,17 @@ function closeNav() {
         for (var i = 0; i < arr.length; i++) {
             var f = arr[i];
             for (var j = 0; j < markers.length; j++) {
+
                 // console.log(markers[j].title + '  ' + arr[i]);
                 // console.log(markers[j].title === arr[i]);
+
                 if (markers[j].title === arr[i]) {
                     markers[j].setMap(map);
                 }
             }
         }
     } 
+
 
     var faveMarkers = [];
 
@@ -184,12 +191,10 @@ function closeNav() {
         var on = false;
 
         $('#addBtn').click(()=> {
-            // console.log(clickedTruck);
             $.get('/addfavorites/' + clickedTruck, function(data){
                 console.log('addtruck clicked')
                 console.log(data);
             }).done(function() {
-                // console.log( "done" );
                 location.reload();
             })
             .fail(function() {
@@ -198,11 +203,11 @@ function closeNav() {
         });
 
         $('#removeBtn').click(()=> {
+
             // console.log(clickedTruck);
             $.get('/delfavorites/' + clickedTruck, function(data){
                 console.log(data);
             }).done(function() {
-                // console.log( "done" );
                 location.reload();
             })
             .fail(function() {
@@ -217,13 +222,13 @@ function closeNav() {
                 $('#slider').addClass('sliderDivOn');
                 $('.sliderHeart').removeClass('off');
                 $('.sliderHeart').addClass('on');
-                $('.sliderHeart').addClass('flip');
-                $(".sliderHeart").animate({left: '140px'});
-                setTimeout(()=>{
-                    $('.sliderHeart').removeClass('flip');
-                }, 400);
-                // $(".sliderHeart").animate({fontSize: '8vh'}, "slow");
-                // $(".sliderHeart").animate({fontSize: '5vh'}, "slow");
+                // $('.sliderHeart').addClass('flip');
+                $(".sliderHeart").velocity({left: '140px'});
+                // setTimeout(()=>{
+                    // $('.sliderHeart').removeClass('flip');
+                // }, 400);
+                // $(".sliderHeart").velocity({fontSize: '8vh'}, "slow");
+                // $(".sliderHeart").velocity({fontSize: '5vh'}, "slow");
                 on = true;
                 placeFavorites();
                 
@@ -233,28 +238,18 @@ function closeNav() {
                 $('#slider').addClass('sliderDivOff');
                 $('.sliderHeart').addClass('off');
                 $('.sliderHeart').removeClass('on');
-                $('.sliderHeart').addClass('flip');
-                $(".sliderHeart").animate({left: '9px'});
-                setTimeout(()=>{
-                    $('.sliderHeart').removeClass('flip');
-                }, 400);
-                // $(".sliderHeart").animate({fontSize: '8vh'}, "slow");
-                // $(".sliderHeart").animate({fontSize: '5vh'}, "slow");
+
+
+                // $('.sliderHeart').addClass('flip');
+                $(".sliderHeart").velocity({left: '9px'});
+                // setTimeout(()=>{
+                    // $('.sliderHeart').removeClass('flip');
+                // }, 400);
+                // $(".sliderHeart").velocity({fontSize: '8vh'}, "slow");
+                // $(".sliderHeart").velocity({fontSize: '5vh'}, "slow");
+
                 on = false;
                 setActiveTrucks();
             }
         })
-
-        //set nav heart to include favorites
-        // var faveList = [];
-
-        // $.get("/favorites", function(data, status){ 
-        //     var trucks = data.favoriteTrucks;
-        //     for (i = 0; i < trucks.length; i++) {
-        //         faveList.push("<li class='faves' key='"+trucks[i]+"''>"+ trucks[i] + "</li>");
-        //     }
-        //     $("#navFavs").append(faveList);
-        //     $("#favList").append(faveList);
-        // });  
-
     });

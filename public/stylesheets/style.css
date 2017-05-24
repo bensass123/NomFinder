@@ -29,6 +29,7 @@ a {
   background-repeat: no-repeat;
   opacity: .8;
   border-style: none;
+
 }
 
 .nav-heart {
@@ -41,6 +42,7 @@ a {
    -webkit-text-stroke-color: black;
    position: absolute;
    right: 0;
+
 }
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
@@ -186,7 +188,6 @@ a {
   display: block;
   margin: auto;
 }
-
 
 /*
 

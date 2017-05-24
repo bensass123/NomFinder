@@ -6,25 +6,6 @@ var Trucks = require('../models/Truck.js');
 var Users = require('../models/User.js');
 var helpers = require('./helpers.js');
 
-/* GET home page. */
-// router.get('/',stormpath.loginRequired, function(req, res, next) {
-//     req.user.getCustomData(function(err, data) { 
-//         // get user group
-//         var group = data.group;
-    
-//         switch (group) {
-//             case 'user':
-//                 res.sendFile(path.join(__dirname, '/../views/index3.html'));
-//                 break;
-//             case 'admin':
-//                 res.sendFile(path.join(__dirname, '/../views/indexAdmin.html'));
-//                 break;
-//             case 'super':
-//                 res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
-//                 break;
-//         }
-//     });
-// });
 
 // View Page
 router.get("/", stormpath.loginRequired, function (req, res){
@@ -416,7 +397,7 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
 
 // New seeing all favorited trucks from one given user
 router.get("/favorites", stormpath.loginRequired, function(req, res) {
-
+  
   Users.findOne({username:req.user.username}, 'favoriteTrucks', function (err, doc) {
     if (err) {
         return handleError(err)
@@ -431,7 +412,8 @@ router.get("/favorites", stormpath.loginRequired, function(req, res) {
   });
 });
 
-// Add favorite truck via POST route
+// Add favorite truck via GET route
+
 
 router.get("/addfavorites/:truckName",stormpath.loginRequired, function(req, res) {
     
@@ -458,6 +440,7 @@ router.get("/delfavorites/:truckName", stormpath.loginRequired, function(req, re
 
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
+  console.log(req.user.username);
   // Find our user and pull the a truck name out of the User's favorites array
   Users.update({username: req.user.username}, { $pull: { favoriteTrucks: truckName } }, function(err, newdoc) {
       // Send any errors to the browser
