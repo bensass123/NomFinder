@@ -12,6 +12,23 @@ router.get("/", stormpath.loginRequired, function (req, res){
   req.user.getCustomData(function(err, data) { 
         // get user group
         var group = data.group;
+        console.log('---------------------GROUP-------------------------')
+        console.log(group);
+        console.log('------------------------------------------------------------')
+
+        if (group === null) {
+          group = 'user';
+          data.group = group;
+          data.save();
+          // updating group in mongo db to match customData
+          Users.findOne({username: req.user.username}, {group: 'user'}, function(error, doc) { 
+            if (err) {console.log(err)}
+            else {
+              console.log('--------------GROUP UPDATED IN MONGO DB---------------------');
+              console.log(req.user.username + ' group = ' + group);
+            }
+          })
+        }
     
         switch (group) {
             case 'user':
@@ -37,9 +54,6 @@ router.get("/", stormpath.loginRequired, function (req, res){
                 }
               });
                 break;
-            // case 'super':
-                // res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
-                // break;
         }
     });
 });
@@ -104,15 +118,23 @@ router.get("/api", function(req, res) {
  });
 
 router.get('/adduser', stormpath.loginRequired, function (req,res){
+
     req.user.getCustomData(function(err, data) { 
-        // get user group
-        console.log('adduser hit');
-        var group = data.group;
-        req.user.group = group;
-        helpers.addUser(req.user);
-        console.log('adduser hit');
-        console.log(req.user);
+      if (!data.favoriteTrucks){
+        var user = req.user;
+        data.favoriteTrucks = [];
+        data.save();
+        helpers.addUser(user, []);
         res.end();
+      }
+
+      else {
+        var user = req.user;
+        console.log('----------------------------ADDUSER favoritetrucks = ' + data.favoriteTrucks)
+        helpers.addUser(user, data.favoriteTrucks);
+        res.end();
+      }
+
     });
 });
 
@@ -165,11 +187,6 @@ router.get('/setuser',stormpath.loginRequired, function(req, res, next) {
     });
 });
 
-router.get('/adduser', stormpath.loginRequired, function(req,res){
-
-  helpers.addUser(req.user);
-  res.end();
-});
 
 router.post('/edituser', stormpath.loginRequired, function(req,res){
 
@@ -383,17 +400,25 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
 
 // New seeing all favorited trucks from one given user
 router.get("/favorites", stormpath.loginRequired, function(req, res) {
-  
+  console.log(req.user.username);
   Users.findOne({username:req.user.username}, 'favoriteTrucks', function (err, doc) {
     if (err) {
         return handleError(err)
     }
     else {
-        var obj = {
-            favoriteTrucks: doc.favoriteTrucks
-
-        }
-        res.send(obj);
+          req.user.getCustomData(function(err, data) {
+            if (!(data.favoriteTrucks)) {
+              var faves = [];
+            }
+            else {
+              var faves = doc.favoriteTrucks;
+            }
+          
+            var obj = {
+              favoriteTrucks: faves
+            }
+              res.send(obj);
+          })      
     }
   });
 });

@@ -111,7 +111,7 @@ app.use(stormpath.init(app, {
         }
       }
     }
-  }
+  
 }));
 
 // catch 404 and forward to error handler

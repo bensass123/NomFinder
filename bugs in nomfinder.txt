@@ -1,0 +1,5 @@
+bugs in nomfinder
+
+when setting up a new user, the get favorites route throws an error about the favoriteTrucks array 
+priority: low (doesnt matter except on initiating a new user)
+

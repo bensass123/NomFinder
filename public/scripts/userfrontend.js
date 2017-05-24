@@ -1,4 +1,6 @@
 
+   console.log('user front end run');
+   
    $(".dropdown-toggle").dropdown();
 
    // logout button
@@ -25,6 +27,7 @@
     // add user to db if new
 
     var addUser = () => {
+        console.log('adduser initiated')
       $.get('/adduser', (err) =>{
         if(err) {console.log(err)}
         console.log('user added');
