@@ -3,6 +3,7 @@ var Users = require('../models/User.js');
 
 module.exports = {
 
+
     addTruck: (email, firstName, lastName, truckName, status = false, lat = 1, long = 2, phone, website, foodType, message, pic) => {
         var obj = {
                 email: email,

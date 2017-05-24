@@ -1,3 +1,4 @@
+
     $(".dropdown-toggle").dropdown();
 
    // logout button
@@ -7,6 +8,7 @@
             location.reload();
         }, 400);
     });
+
 
    // TESTING ONLY, POPULATES DB WITH TEST DATA
     var testPopulate = () => {
@@ -73,6 +75,7 @@
       // no info window for user
         let infowindow = new google.maps.InfoWindow({
           content: truckInfo
+
         });
 
         let marker = new google.maps.Marker({
@@ -93,6 +96,7 @@
     }
 
 
+
     var setActiveTrucks = () => {
       //ajax call to get active trucks, then send all data to placeMarker to create Markers
       $.get("/api", function(data, status){
@@ -102,6 +106,7 @@
         for (var i = 0; i <activeTrucks.length; i++) {
           var t = activeTrucks[i];
           placeMarker(parseFloat(t.lat), parseFloat(t.long), t.truckName, t.website, t.message, truckIcon);
+
         }
       });
     }
@@ -119,7 +124,7 @@
     var addTruck = () => {
       $.post('/addtruck', (err) =>{
         if(err) {console.log(err)}
-        // console.log('truck added');
+
       });
     }
 
@@ -161,16 +166,5 @@
             }
         })
 
-         //set nav heart to include favorites
-        // var faveList = [];
-
-        // $.get("/alltrucks", function(data, status){ 
-        //     var trucks = data;
-        //     for (i = 0; i < trucks.length; i++) {
-        //         faveList.push("<li class='faves' key='" + trucks[i] + "''>"+ trucks[i] + "</li>");
-        //     }
-        //     $('#navFaves').html(faveList);
-        //     console.log(faveList);
-        // });
     });
   
