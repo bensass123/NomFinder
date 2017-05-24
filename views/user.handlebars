@@ -30,32 +30,56 @@
                   <ul class="dropdown-menu">
                     <li><a href="/">Home</a></li>
                     <li><a href="../profile">Profile Settings</a></li>
-                    <li id='logout'><a href="/logout">Logout</a></li>
+                    <li id='logout'><a href="">Logout</a></li>
                   </ul>
                 </li>
             </ul>
         </div>
     </nav>
 <div class="container-fluid">
-   <div class="col-md-12">
-    <div class="jumbotron">
-    <!-- This set's the Jumbotrons header. -->
+  <div class="row well">
+    <div class="col-md-7">
+      
+      <!-- This set's the Jumbotrons header. -->
 
-       <div class="page-header">
-         <h3>Username: {{user.username}}</h3>
-       </div>
-     
-   <!-- Other Information. -->
-     <h2>First Name:</h2>
-     <p>{{user.firstName}}</p>
-     <h2>Last Name:</h2>
-     <p>{{user.lastName}}</p>
-     <h2>Email:</h2>
-     <p>{{user.email}}</p>
-     <h2>Phone:</h2>
-     <a href="tel:{{user.phone}}">{{user.phone}}<span class="glyphicon glyphicon-phone glyphicon-align-left" aria-hidden="true"></span></a><br>
-    <p>Favorites: {{user.favoriteTrucks}}</p>
+         <div class="page-header"><h2>Username: {{user.username}}</h2></div>
+       
+         <!-- Other Information. -->
+           <h2>First Name:</h2>
+           <p>{{user.firstName}}</p>
+           <h2>Last Name:</h2>
+           <p>{{user.lastName}}</p>
+           <h2>Email:</h2>
+           <p>{{user.email}}</p>
+           <h2>Phone:</h2>
+           <a href="tel:{{user.phone}}">{{user.phone}}<span class="glyphicon glyphicon-phone glyphicon-align-left" aria-hidden="true"></span></a><br>
+          <p>Favorites: {{user.favoriteTrucks}}</p>
+      </div>
+    
+      <br>
+    <div class='col-md-4'>
+    <div class="panel panel-warning adminPanel">
+        <div class="panel-heading text-center">
+            Update Your Information:
+        </div>
+    <div class="panel-body text-center">        
+        <h1>User</h1>
+
+        <form action="/postloc" method='post'>
+            First Name:<br>
+            <input type="text" name="firstName"><br><br>
+            Last Name:<br>
+            <input type="text" name="lastName"><br><br>
+            Username:<br>
+            <input type="text" name="username"><br><br>
+            Phone Number:<br>
+            <input type="text" name="phone"><br><br>
+            <input type="submit" value="Submit"> 
+        </form>
     </div>
+  </div>
+  </div>
+</div>
        <!-- jQuery -->
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> 
        <!-- Bootstrap JavaScript -->

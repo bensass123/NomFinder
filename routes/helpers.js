@@ -41,8 +41,8 @@ module.exports = {
             user.phone = 55555555555;
         }
         var obj = {
-            firstName: user.firstName,
-            lastName: user.lastName,
+            firstName: user.givenName,
+            lastName: user.surname,
             email: user.email,
             phone: user.phone,
             username: user.username,
@@ -54,23 +54,6 @@ module.exports = {
             if (err) {console.log(err);}
             else {console.log(doc);}
         })
-    },
-
-    editUser: (user) => {
-        console.log(user);
-        var obj = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            phone: user.phone,
-            username: user.username,
-            group: user.group
-        }
-
-        return Users.FindOneAndUpdate({email: user.email}, obj, {upsert: true}, (err, doc) => {
-            if (err) {console.log(err);}
-            else {console.log(doc);}
-        }) 
     }
 
 

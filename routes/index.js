@@ -46,9 +46,9 @@ router.get("/", stormpath.loginRequired, function (req, res){
                 }
               });
                 break;
-            case 'admin':
 
-              Trucks.findOne({email: req.user.username}).exec(function(err, doc){
+            case 'admin':
+              Trucks.findOne({email: req.user.email}).exec(function(err, doc){
                 if (err){
                   console.log(err);
                 } else {
@@ -190,10 +190,35 @@ router.get('/adduser', stormpath.loginRequired, function(req,res){
   res.end();
 });
 
-router.get('/edituser', stormpath.loginRequired, function(req,res){
+router.post('/edituser', stormpath.loginRequired, function(req,res){
 
-  helpers.editUser(req.user);
-  res.end();
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName; 
+  var phone = req.body.phone;
+  var username = req.body.username;
+
+  console.log("First name: " + firstName);
+  console.log("Last name: " + lastName);
+  console.log("Phone: " + phone);
+  console.log("username: " + username);
+
+  Users.findOneAndUpdate({email: req.user.email}, 
+    {
+      $set: {
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone
+      
+    }}, { upsert: true }).exec(function(err, doc) {
+
+      if (err) {
+      console.log(err);
+      }
+      else {
+      res.send(doc);
+      }
+  });
 });
 
 // Route to see what user looks like without populating
@@ -307,6 +332,7 @@ router.post('/postadmin', stormpath.loginRequired, function (req, res) {
 router.post('/postloc', stormpath.loginRequired, function (req, res) {
     console.log('post location route hit');
     console.log(req.body);
+    var user = req.user.email;
     var truckName = req.body.truckName;
     var lat = req.body.lat;
     var long = req.body.long;
@@ -326,18 +352,18 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
     // toggle status in  model
     if(!status) {
         Trucks.findOneAndUpdate({
-            truckName: truckName
+            email: user
         }, {
             $set: {
             status: false
             }
-        }, { upsert: true }).exec(function(err) {
+        }, { upsert: true }).exec(function(err, doc) {
 
             if (err) {
             console.log(err);
             }
             else {
-            res.send(truckName + " Status: Off-duty");
+            res.render("admin", {'user': doc});
             }
         });
     } 
@@ -345,7 +371,7 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
     // if signing on/reporting location
     else {
         Trucks.findOneAndUpdate({
-            truckName: truckName
+            email: user
         }, {
             $set: {
             status: true,
@@ -361,13 +387,13 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
             foodType: foodType,
             message: message
             }
-        }, { upsert: true }).exec(function(err) {
+        }, { upsert: true }).exec(function(err, doc) {
 
             if (err) {
             console.log(err);
             }
             else {
-            res.send(truckName + " Status: On-duty");
+            res.render("admin", {'user': doc});
             }
         });
     }

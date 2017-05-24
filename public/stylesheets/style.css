@@ -88,7 +88,6 @@ a {
 }
 
 
-
 /*slider stuff*/
 
 #slider{
@@ -128,6 +127,14 @@ a {
   top: 9px;*/
 }
 
+
+/* User Form Group */
+
+.form-group{
+  max-width: 50%;
+  display: block;
+  margin: auto;
+}
 /*
 
 .switch {
