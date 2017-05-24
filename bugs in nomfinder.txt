@@ -1,5 +1,11 @@
 bugs in nomfinder
 
-when setting up a new user, the get favorites route throws an error about the favoriteTrucks array 
-priority: low (doesnt matter except on initiating a new user)
 
+group stuff is showing as null in db for some reason
+priority: high
+
+postloc route problems that sarah msgd me about last night (havent looked at it today)
+priority: high
+
+when users edit their information we need to update customData as well as database entires  (hating that i used customData at all for this! i should have done it all in mongo... ah well u live and u learn)
+priority: high

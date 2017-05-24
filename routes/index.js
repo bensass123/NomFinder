@@ -120,18 +120,19 @@ router.get("/api", function(req, res) {
 router.get('/adduser', stormpath.loginRequired, function (req,res){
 
     req.user.getCustomData(function(err, data) { 
-      if (!data.favoriteTrucks){
+      if (!data.group){
         var user = req.user;
-        data.favoriteTrucks = [];
+        data.group = 'user';
         data.save();
-        helpers.addUser(user, []);
+        helpers.addUser(user, 'user');
         res.end();
       }
 
       else {
         var user = req.user;
-        console.log('----------------------------ADDUSER favoritetrucks = ' + data.favoriteTrucks)
-        helpers.addUser(user, data.favoriteTrucks);
+        var group = data.group;
+        console.log('----------------------------ADDUSER group = ' + data.group)
+        helpers.addUser(user, group);
         res.end();
       }
 

@@ -25,7 +25,7 @@ module.exports = {
         })
     },
   
-    addUser: (user, faves) => {
+    addUser: (user, group) => {
         console.log('initial user');
         console.log(user);
         console.log('---------------adduser-user-object------------');
