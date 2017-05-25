@@ -41,7 +41,7 @@ var TruckSchema = new Schema({
     type: String
   },
   group: {
-    type: Array
+    type: String
   }
 
 });

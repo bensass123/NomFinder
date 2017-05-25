@@ -19,36 +19,73 @@ module.exports = {
                 message: message,
                 pic: pic
             };
-        return Trucks.update({truckName: truckName}, obj, {upsert: true}, (err, doc) => {
+        return Trucks.update({email: email}, obj, {upsert: true}, (err, doc) => {
             if (err) {console.log(err);}
             else {console.log(doc);}
         })
     },
   
-    addUser: (user, group) => {
+    addUser: (user) => {
         // console.log('initial user');
-        // console.log(user);
+        console.log(user);
         // console.log('---------------adduser-user-object------------');
         // console.log(user.customData);
-        // console.log('---------------adduser-CUSTOMDATA-object------------');
 
-        if (!user.phone) {
-            user.phone = 55555555555;
-        }
-        var obj = {
-            firstName: user.givenName,
-            lastName: user.surname,
-            email: user.email,
-            phone: user.phone,
-            username: user.username,
-            group: user.group
-        }
+        user.getCustomData(function(err, data) { 
+            var group;
+            if (data.group != null) {
+                group = data.group;
+            } 
+            else{
+                group = 'user';
+            }
+            
+            console.log('group is (helpers): ', group)
 
-        
-        return Users.update({email: user.email}, obj, {upsert: true}, (err, doc) => {
-            if (err) {console.log(err);}
-            else {console.log(doc);}
+            console.log('---------------adduser-CUSTOMDATA-object------------');
+            console.log('data is (helpers): ', data);
+            console.log('---------------adduser-CUSTOMDATA-object------------');
+
+            // create user entry if it doesnt exist
+            if (group.toLowerCase() === 'user') {
+                console.log('users hit')
+                var obj = {
+                    firstName: user.givenName,
+                    lastName: user.surname,
+                    email: user.email,
+                    phone: user.phone,
+                    username: user.username,
+                    group: group
+                }
+                return Users.update({email: user.email}, obj, {upsert: true}, (err, doc) => {
+                    if (err) {console.log(err);}
+                    else {console.log('------------USERS-------------------DOC---',doc);}
+                })
+            } 
+
+            else if (group.toLowerCase() === 'admin') {
+                console.log('admin hit')
+                var website = data.website;
+                var foodType = data.foodType;
+                var truckName = data.truckName;
+
+                var obj = {
+                    firstName: user.givenName,
+                    lastName: user.surname,
+                    email: user.email,
+                    phone: data.phone,
+                    website: data.website,
+                    foodType: data.foodType,
+                    truckName: data.truckName
+                }
+
+                return Trucks.update({email: user.email}, obj, {upsert: true}, (err, doc) => {
+                    if (err) {console.log('ERROR',err);}
+                    else {console.log('------------TRUCKS-------------------DOC---',doc);}
+                })
+            } 
         })
+        
     }
 
 }

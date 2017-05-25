@@ -137,9 +137,30 @@ a {
 
 /*Favorites Panel*/
 
-#favList > li{
+.favList > li{
   list-style: none;
   margin-left: -43px;
+}
+
+li > a {
+  display: inline-block;
+}
+
+a .favs{
+  display: block;
+  margin: auto;
+  margin-top: 15px;
+}
+
+.nope {
+  font-size: 10px;
+  text-align: center;
+  vertical-align: middle;
+  width: 10px;
+  height: 24px;
+  padding-right: 15px;
+  margin-left: 5px;
+  box-shadow: 4px 4px 4px #999;
 }
 
 

@@ -190,7 +190,7 @@ function closeNav() {
         
         var on = false;
 
-        $('#addBtn').click(()=> {
+        $('.addBtn').click(()=> {
             $.get('/addfavorites/' + clickedTruck, function(data){
                 console.log('addtruck clicked')
                 console.log(data);
@@ -202,7 +202,7 @@ function closeNav() {
             })
         });
 
-        $('#removeBtn').click(()=> {
+        $('.removeBtn').click(()=> {
 
             // console.log(clickedTruck);
             $.get('/delfavorites/' + clickedTruck, function(data){
@@ -222,13 +222,13 @@ function closeNav() {
                 $('#slider').addClass('sliderDivOn');
                 $('.sliderHeart').removeClass('off');
                 $('.sliderHeart').addClass('on');
-                // $('.sliderHeart').addClass('flip');
-                $(".sliderHeart").velocity({left: '140px'});
-                // setTimeout(()=>{
-                    // $('.sliderHeart').removeClass('flip');
-                // }, 400);
-                // $(".sliderHeart").velocity({fontSize: '8vh'}, "slow");
-                // $(".sliderHeart").velocity({fontSize: '5vh'}, "slow");
+                $('.sliderHeart').addClass('flip');
+                $(".sliderHeart").animate({left: '140px'});
+                setTimeout(()=>{
+                    $('.sliderHeart').removeClass('flip');
+                }, 400);
+                // $(".sliderHeart").animate({fontSize: '8vh'}, "slow");
+                // $(".sliderHeart").animate({fontSize: '5vh'}, "slow");
                 on = true;
                 placeFavorites();
                 
@@ -238,16 +238,13 @@ function closeNav() {
                 $('#slider').addClass('sliderDivOff');
                 $('.sliderHeart').addClass('off');
                 $('.sliderHeart').removeClass('on');
-
-
-                // $('.sliderHeart').addClass('flip');
-                $(".sliderHeart").velocity({left: '9px'});
-                // setTimeout(()=>{
-                    // $('.sliderHeart').removeClass('flip');
-                // }, 400);
-                // $(".sliderHeart").velocity({fontSize: '8vh'}, "slow");
-                // $(".sliderHeart").velocity({fontSize: '5vh'}, "slow");
-
+                $('.sliderHeart').addClass('flip');
+                $(".sliderHeart").animate({left: '9px'});
+                setTimeout(()=>{
+                    $('.sliderHeart').removeClass('flip');
+                }, 400);
+                // $(".sliderHeart").animate({fontSize: '8vh'}, "slow");
+                // $(".sliderHeart").animate({fontSize: '5vh'}, "slow");
                 on = false;
                 setActiveTrucks();
             }

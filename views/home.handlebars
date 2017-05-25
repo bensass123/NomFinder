@@ -68,11 +68,12 @@
                         <h3 class="panel-title text-center">Favorites</h3>
                     </div>
                     <div class="panel-body text-center">
-                        <ul id="favList">
+                        <ul class="favList">
                             {{#each user.favoriteTrucks}}
                                 <!-- {{#unless this.favoriteTrucks}} -->
                                     <li>
                                         <a href='profile/{{this}}'><h4>{{this}}</h4></a>
+                                        <a href="/delfavorites/{{this}}" method="post"><button type="button" class="btn btn-danger nope removeBtn">X</button></a>
                                     </li>
                                 <!-- {{/unless}} -->
                             {{/each}}
@@ -88,8 +89,8 @@
         <div class='container-fluid'>
           <div class='row'>
             <div class=' col-md-8 favButtons'>
-                <button type="button" id='removeBtn' class="btn btn-primary favButtons"><span class='glyphicon glyphicon-thumbs-down'></span></button>
-                <button type="button" id='addBtn' class="btn btn-primary favButtons"><span class='glyphicon glyphicon-thumbs-up'></span></button>
+                <button type="button" id='removeBtn' class="btn btn-primary favButtons removeBtn"><span class='glyphicon glyphicon-thumbs-down'></span></button>
+                <button type="button" id='addBtn' class="btn btn-primary favButtons addBtn"><span class='glyphicon glyphicon-thumbs-up'></span></button>
             </div>
           </div>  
         </div>
