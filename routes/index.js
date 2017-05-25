@@ -12,6 +12,23 @@ router.get("/", stormpath.loginRequired, function (req, res){
   req.user.getCustomData(function(err, data) { 
         // get user group
         var group = data.group;
+        // console.log('---------------------GROUP-------------------------');
+        // console.log(group);
+        // console.log('------------------------------------------------------------');
+
+        if (group === null) {
+          group = 'user';
+          data.group = group;
+          data.save();
+          // updating group in mongo db to match customData
+          Users.findOne({username: req.user.username}, {group: 'user'}, function(error, doc) { 
+            if (err) {console.log(err)}
+            else {
+              // console.log('--------------GROUP UPDATED IN MONGO DB---------------------');
+              console.log(req.user.username + ' group = ' + group);
+            }
+          })
+        }
     
         switch (group) {
             case 'user':
@@ -22,7 +39,6 @@ router.get("/", stormpath.loginRequired, function (req, res){
                 }
                 // Or send the doc to the browser
                 else {
-                  console.log(doc);
                   res.render("home", {'user': doc});
                 }
               });
@@ -37,9 +53,6 @@ router.get("/", stormpath.loginRequired, function (req, res){
                 }
               });
                 break;
-            // case 'super':
-                // res.sendFile(path.join(__dirname, '/../views/indexSuper.html'));
-                // break;
         }
     });
 });
@@ -80,7 +93,7 @@ router.get("/profile", stormpath.loginRequired, function (req, res){
 
 router.get("/profile/:truckName", stormpath.loginRequired, function (req, res){
   var truck = req.params.truckName;
-  truck = truck.replace(/%20/g, "")
+  truck = truck.replace(/%20/g, "");
 
   Trucks.findOne({truckName: truck}).exec(function(err, doc){
     if (err){
@@ -103,17 +116,37 @@ router.get("/api", function(req, res) {
    });
  });
 
-router.get('/adduser', stormpath.loginRequired, function (req,res){
-    req.user.getCustomData(function(err, data) { 
-        // get user group
-        console.log('adduser hit');
-        var group = data.group;
-        req.user.group = group;
-        helpers.addUser(req.user);
-        console.log('adduser hit');
-        console.log(req.user);
-        res.end();
-    });
+// router.get('/adduser', stormpath.loginRequired, function (req,res){
+
+//     req.user.getCustomData(function(err, data) { 
+//       if (!data.group){
+//         var user = req.user;
+//         data.group = 'user';
+//         data.save();
+//         helpers.addUser(user, 'user');
+//         res.end();
+//       } else if (data.group === "user"){
+//         var user = req.user;
+//         var group = data.group;
+//         // console.log('----------------------------ADDUSER group = ' + data.group)
+//         helpers.addUser(user, group);
+//         res.end();
+//       } else if (data.group === "admin"){
+//         var user = req.user;
+//         var group = data.group;
+//         // console.log('----------------------------ADDUSER group = ' + data.group)
+//         helpers.addUser(user, group);
+//         helpers.addTruck(user, group);
+//         res.end();
+//       }
+
+//     });
+// });
+
+router.get('/adduser', stormpath.loginRequired, function(req,res){
+
+  helpers.addUser(req.user);
+  res.end();
 });
 
 router.get("/allusers", stormpath.loginRequired, function(req, res) {
@@ -165,12 +198,6 @@ router.get('/setuser',stormpath.loginRequired, function(req, res, next) {
     });
 });
 
-router.get('/adduser', stormpath.loginRequired, function(req,res){
-
-  helpers.addUser(req.user);
-  res.end();
-});
-
 router.post('/edituser', stormpath.loginRequired, function(req,res){
 
   var firstName = req.body.firstName;
@@ -178,10 +205,10 @@ router.post('/edituser', stormpath.loginRequired, function(req,res){
   var phone = req.body.phone;
   var username = req.body.username;
 
-  console.log("First name: " + firstName);
-  console.log("Last name: " + lastName);
-  console.log("Phone: " + phone);
-  console.log("username: " + username);
+  // console.log("First name: " + firstName);
+  // console.log("Last name: " + lastName);
+  // console.log("Phone: " + phone);
+  // console.log("username: " + username);
 
   Users.findOneAndUpdate({email: req.user.email}, 
     {
@@ -197,7 +224,7 @@ router.post('/edituser', stormpath.loginRequired, function(req,res){
       console.log(err);
       }
       else {
-      res.render("user", {"user": doc});
+      res.render("user");
       }
   });
 });
@@ -294,11 +321,37 @@ router.get("/deletetrucks", function(req, res) {
     });
 });
 
-
 router.post('/addtruck', stormpath.loginRequired, function (req, res) {
     var user = req.user;
     helpers.addTruck(user.email, user.firstName, user.lastName);
     // email, firstName, lastName, truckName
+});
+
+router.post("/editTruck", stormpath.loginRequired, function (req, res) {
+  var user = req.user;
+  var truckName = req.body.truckName;
+  var website = req.body.website;
+  var message = req.body.message;
+  var foodType = req.body.foodType;
+
+  Trucks.update({email: req.user.email}, 
+  {
+      $set: {
+      truckName: truckName,
+      website: website,
+      message: message,
+      foodType: foodType
+      }
+
+  }, { upsert: true }).exec(function(err, doc) {
+
+      if (err) {
+      console.log(err);
+      }
+      else {
+      res.render("truck", {'user':doc});
+      }
+  });
 });
 
 router.post('/postadmin', stormpath.loginRequired, function (req, res) {
@@ -313,12 +366,10 @@ router.post('/postadmin', stormpath.loginRequired, function (req, res) {
 router.post('/postloc', stormpath.loginRequired, function (req, res) {
     console.log('post location route hit');
     console.log(req.body);
-    var user = req.user.email;
     var truckName = req.body.truckName;
     var lat = req.body.lat;
     var long = req.body.long;
     var message = req.body.message;
-    var website = req.body.website;
 
     //status handler
     var status = req.body.status;
@@ -333,7 +384,7 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
     // toggle status in  model
     if(!status) {
         Trucks.findOneAndUpdate({
-            email: user
+            truckName: truckName
         }, {
             $set: {
             status: false
@@ -344,7 +395,7 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
             console.log(err);
             }
             else {
-            res.render("admin", {'user': doc});
+            res.render("admin");
             }
         });
     } 
@@ -352,20 +403,12 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
     // if signing on/reporting location
     else {
         Trucks.findOneAndUpdate({
-            email: user
+            truckName: truckName
         }, {
             $set: {
             status: true,
             lat: lat,
             long: long,
-            message: message,
-            website: website,
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
-            phone: phone,
-            website: website,
-            foodType: foodType,
             message: message
             }
         }, { upsert: true }).exec(function(err, doc) {
@@ -374,7 +417,7 @@ router.post('/postloc', stormpath.loginRequired, function (req, res) {
             console.log(err);
             }
             else {
-            res.render("admin", {'user': doc});
+            res.render("admin");
             }
         });
     }
@@ -405,6 +448,7 @@ router.get("/addfavorites/:truckName",stormpath.loginRequired, function(req, res
     
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
+  truckName = truckName.replace(/%20/g, "");
   
   // Find our user and push the new truck name into the User's favorites array
   Users.update({username: req.user.username}, { $addToSet: { favoriteTrucks: truckName } }, function(err, newdoc) {
@@ -415,7 +459,8 @@ router.get("/addfavorites/:truckName",stormpath.loginRequired, function(req, res
     }
     // Or send the newdoc to the browser
     else {
-        res.send(newdoc);
+        res.render("home");
+        // res.send(newdoc);
     }
   });
 });
@@ -426,7 +471,9 @@ router.get("/delfavorites/:truckName", stormpath.loginRequired, function(req, re
 
   // Find our user and push the new truck name into the User's favorites array
   var truckName = req.params.truckName;
-  console.log(req.user.username);
+  truckName = truckName.replace(/%20/g, "");
+
+  // console.log(req.user.username);
   // Find our user and pull the a truck name out of the User's favorites array
   Users.update({username: req.user.username}, { $pull: { favoriteTrucks: truckName } }, function(err, newdoc) {
       // Send any errors to the browser
@@ -435,7 +482,8 @@ router.get("/delfavorites/:truckName", stormpath.loginRequired, function(req, re
       }
       // Or send the newdoc to the browser
       else {
-        res.send(newdoc);
+        // res.send(newdoc);
+        res.render("home");
       }
   });
 });
