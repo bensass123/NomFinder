@@ -33,9 +33,9 @@ app.use('/users', users);
 
 // Database configuration with mongoose
 // LOCAL ENVIRONMENT
-mongoose.connect("mongodb://localhost/nom");
+// mongoose.connect("mongodb://localhost/nom");
 // PRODUCTION ENVIRONMENT
-// mongoose.connect("mongodb://admin:codingrocks@ds023674.mlab.com:23674/heroku_5ql1blnl");
+mongoose.connect("mongodb://heroku_nmzmdh95:89cihl0hmds6foh6ve56rqpn55@ds151941.mlab.com:51941/heroku_nmzmdh95");
 var db = mongoose.connection;
 
 // Show any mongoose errors
