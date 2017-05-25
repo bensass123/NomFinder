@@ -119,24 +119,28 @@ router.get("/api", function(req, res) {
 
 router.get('/adduser', stormpath.loginRequired, function (req,res){
 
-    req.user.getCustomData(function(err, data) { 
-      if (!data.group){
-        var user = req.user;
-        data.group = 'user';
-        data.save();
-        helpers.addUser(user, 'user');
-        res.end();
-      }
+  // this 'if' statement handles StormPath accounts that exist but were not registered thru us
+  // so they don't have a group 
+    // req.user.getCustomData(function(err, data) { 
+    //   if (!data.group){
+    //     var user = req.user;
+    //     data.group = 'user';
+    //     data.save();
+    //     helpers.addUser(user);
+    //     res.end();
+    //   }
 
-      else {
-        var user = req.user;
-        var group = data.group;
-        console.log('----------------------------ADDUSER group = ' + data.group)
-        helpers.addUser(user, group);
-        res.end();
-      }
+    //   else {
+    //     var user = req.user;
+    //     var group = data.group;
+    //     console.log('----------------------------ADDUSER group = ' + data.group)
+    //     helpers.addUser(user);
+    //     res.end();
+    //   }
 
-    });
+    // });
+    helpers.addUser(req.user);
+    res.end();
 });
 
 router.get("/allusers", stormpath.loginRequired, function(req, res) {
@@ -463,7 +467,7 @@ router.get("/delfavorites/:truckName", stormpath.loginRequired, function(req, re
       else {
         res.send(newdoc);
       }
-  });
+   });
 });
 
 module.exports = router;
